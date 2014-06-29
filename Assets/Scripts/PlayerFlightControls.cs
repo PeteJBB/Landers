@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Runtime.InteropServices;
+using UnityEngine;
 using System.Collections;
 
 public class PlayerFlightControls : MonoBehaviour
@@ -9,10 +10,12 @@ public class PlayerFlightControls : MonoBehaviour
 
 	const float _enginePower = 400;
 	
-	float _collective; // what the pilot has set
-	Vector3 dragVector; // the calculated drag this frame
-	float deltaMultiplier;
-	float _lastHitTime;
+	private float _throttle; // what the pilot has set
+	private Vector3 dragVector; // the calculated drag this frame
+	private float deltaMultiplier;
+	private float _lastHitTime;
+
+    private bool _isJetMode = false;
 	
 	
 	// Use this for initialization
@@ -36,25 +39,39 @@ public class PlayerFlightControls : MonoBehaviour
 	
 	void UpdateFlightControls()
 	{
-		if (Input.GetKey(KeyCode.W))
-		{
-			_collective = 1;
-		}
-		else if (Input.GetKey(KeyCode.S))
-		{
-			_collective = 0;
-		}
-		else
-		{
-			// hover
-			var thrustAngle = Mathf.Deg2Rad * Vector3.Angle(Physics.gravity, -transform.up);
-			var energy = (rigidbody.mass * Physics.gravity.magnitude) - (rigidbody.velocity.y * Mathf.Abs(rigidbody.velocity.y));
-			var thrustNeeded = energy / Mathf.Cos(thrustAngle);
-			_collective = Mathf.Clamp(thrustNeeded / _enginePower, 0, 1);
-		}
-		
-		this.rigidbody.AddRelativeForce(new Vector3(0, _enginePower * _collective * deltaMultiplier, 0));
-		
+        if (Input.GetKeyDown(KeyCode.Return))
+        {
+            _isJetMode = !_isJetMode;
+        }
+
+
+	    if (Input.GetKey(KeyCode.W))
+	    {
+	        _throttle = 1;
+	    }
+	    else if (Input.GetKey(KeyCode.S))
+	    {
+	        _throttle = 0;
+	    }
+	    else
+	    {
+	        // hover
+	        var thrustAngle = Mathf.Deg2Rad * Vector3.Angle(Physics.gravity, -transform.up);
+	        var energy = (rigidbody.mass * Physics.gravity.magnitude) -
+	                        (rigidbody.velocity.y * Mathf.Abs(rigidbody.velocity.y));
+	        var thrustNeeded = energy / Mathf.Cos(thrustAngle);
+	        _throttle = Mathf.Clamp(thrustNeeded / _enginePower, 0, 1);
+	    }
+
+        this.rigidbody.AddRelativeForce(new Vector3(0, _enginePower * _throttle * deltaMultiplier, 0));
+
+	    if(_isJetMode)
+	    {
+	        var thrust = 30000 * Time.fixedDeltaTime;
+            this.rigidbody.AddRelativeForce(new Vector3(0,0, thrust));
+	    }
+
+	    
 		// pitch
 		if (Input.GetKey(KeyCode.UpArrow))
 		{
@@ -95,9 +112,9 @@ public class PlayerFlightControls : MonoBehaviour
 		rigidbody.AddRelativeForce(dragVector * deltaMultiplier);
 		
 		// weathervaning
-        var correctionVector = new Vector3(
-            -relativeVel.y * Mathf.Abs(relativeVel.y) * 0.01f,
-            relativeVel.x * Mathf.Abs(relativeVel.x) * 0.05f,
+	    var correctionVector = new Vector3(
+	        -relativeVel.y * Mathf.Abs(relativeVel.y) * 0.01f,
+            relativeVel.x * Mathf.Abs(relativeVel.x) * 0.05f, //0.1f,
             0
             );
         rigidbody.AddRelativeTorque(correctionVector * deltaMultiplier);
@@ -112,7 +129,10 @@ public class PlayerFlightControls : MonoBehaviour
 	void OnGUI()
 	{
 		GUI.TextArea(new Rect(20, 20, 100, 20), "Alt: " + transform.position.y, Utility.BasicGuiStyle );
-		GUI.TextArea(new Rect(20, 50, 100, 20), "Collective: " + _collective * 100 + "%", Utility.BasicGuiStyle);
+		GUI.TextArea(new Rect(20, 50, 100, 20), "Throttle: " + _throttle * 100 + "%", Utility.BasicGuiStyle);
+
+	    var mode = _isJetMode ? "On" : "Off";
+        GUI.TextArea(new Rect(20, 80, 100, 20), "Jets: " + mode, Utility.BasicGuiStyle);
 		
 	}
 }

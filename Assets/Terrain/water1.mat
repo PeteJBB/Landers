@@ -7,7 +7,7 @@ Material:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_Name: water1
-  m_Shader: {fileID: 10, guid: 0000000000000000f000000000000000, type: 0}
+  m_Shader: {fileID: 4800000, guid: 58e9f2eef180c2040ac531880fd65abe, type: 3}
   m_ShaderKeywords: []
   m_CustomRenderQueue: -1
   m_SavedProperties:
@@ -18,14 +18,21 @@ Material:
           name: _MainTex
         second:
           m_Texture: {fileID: 2800000, guid: 06b73a738e4914f409aac1a112844316, type: 3}
-          m_Scale: {x: 1000, y: 1000}
-          m_Offset: {x: 0, y: 0}
+          m_Scale: {x: 2000, y: 2000}
+          m_Offset: {x: .699999988, y: 0}
       data:
         first:
           name: _Illum
         second:
           m_Texture: {fileID: 0}
           m_Scale: {x: 1, y: 1}
+          m_Offset: {x: 0, y: 0}
+      data:
+        first:
+          name: _GridAlphaTex
+        second:
+          m_Texture: {fileID: 2800000, guid: 14871d052238e5448aa1a3e4d92d287e, type: 3}
+          m_Scale: {x: 2000, y: 2000}
           m_Offset: {x: 0, y: 0}
     m_Floats:
       data:
@@ -43,9 +50,17 @@ Material:
         second: {r: 0, g: .465517253, b: .79411763, a: 1}
       data:
         first:
+          name: _Emission
+        second: {r: 0, g: 0, b: 0, a: 0}
+      data:
+        first:
           name: _SpecColor
         second: {r: 1, g: 1, b: 1, a: 1}
       data:
         first:
-          name: _Emission
-        second: {r: 0, g: 0, b: 0, a: 0}
+          name: _GridColor
+        second: {r: 0, g: 1, b: 0, a: 1}
+      data:
+        first:
+          name: _MainColor
+        second: {r: 0, g: .315162301, b: .83088237, a: 1}

@@ -22,7 +22,6 @@ public class Lander : MonoBehaviour
     void Update()
     {
         _smoke.particleSystem.startLifetime = Random.Range(SmokeLifeTimeMin, SmokeLifeTimeMax);
-        print(rigidbody.velocity);
     }
 
     public void OnCollisionEnter(Collision col)

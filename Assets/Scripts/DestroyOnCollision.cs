@@ -10,8 +10,16 @@ public class DestroyOnCollision : MonoBehaviour
     {
         if (!_hasExploded)
         {
-            print(col.contacts.Length);
             Explode(col.contacts[0].point);
+            Destroy(gameObject);
+        }
+    }
+
+    public void OnTriggerEnter(Collider other)
+    {
+        if (!_hasExploded)
+        {
+            Explode(transform.position - (rigidbody.velocity * Time.fixedDeltaTime));
             Destroy(gameObject);
         }
     }
@@ -21,8 +29,8 @@ public class DestroyOnCollision : MonoBehaviour
         if (ExplosionPrefab != null)
         {
             var exp = (GameObject)Instantiate(ExplosionPrefab);
-            
-            exp.transform.position = transform.position + (transform.forward * rigidbody.velocity.magnitude * Time.deltaTime / 2);
+
+            exp.transform.position = point;
             _hasExploded = true;
         }
     }

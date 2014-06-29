@@ -15,7 +15,7 @@ public class LanderFactory : MonoBehaviour
 
 	void Start () 
 	{
-		ResetTerrainColoring();
+		//ResetTerrainColoring();
 		_lastSpawn = Time.fixedTime;
 	}
 
@@ -28,15 +28,15 @@ public class LanderFactory : MonoBehaviour
 
 		    if (count < _maxSpawnAtOnce)
 		    {
-		        // spawn new lander
-		        var lander = (GameObject) Instantiate(LanderPrefab);
-		        var sites = FindObjectsOfType<LandingSite>();
+		        // look for available landing site
+		        var sites = GameObject.FindGameObjectsWithTag("LandingSite");
 		        if (sites.Length > 0)
 		        {
 		            var selectedSite = sites[Random.Range(0, sites.Length - 1)];
 
-		            lander.transform.position = new Vector3(selectedSite.transform.position.x, SpawnHeight,
-		                selectedSite.transform.position.z);
+                    // spawn a new lander
+                    var lander = (GameObject)Instantiate(LanderPrefab);
+                    lander.transform.position = new Vector3(selectedSite.transform.position.x, SpawnHeight, selectedSite.transform.position.z);
 		            lander.transform.eulerAngles = new Vector3(-90, 0, 0);
 		            lander.rigidbody.velocity = new Vector3(0, -50, 0);
 

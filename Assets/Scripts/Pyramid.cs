@@ -20,7 +20,7 @@ public class Pyramid : MonoBehaviour
     {
         _structure = transform.FindChild("structure");
         _birthday = Time.fixedTime;
-        PaintTerrain();
+        //PaintTerrain();
     }
 
     void Update()
