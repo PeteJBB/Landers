@@ -6,8 +6,8 @@ Material:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: landerMat
-  m_Shader: {fileID: 4800000, guid: 58e9f2eef180c2040ac531880fd65abe, type: 3}
+  m_Name: BulletOuter
+  m_Shader: {fileID: 200, guid: 0000000000000000f000000000000000, type: 0}
   m_ShaderKeywords: []
   m_CustomRenderQueue: -1
   m_SavedProperties:
@@ -17,8 +17,8 @@ Material:
         first:
           name: _MainTex
         second:
-          m_Texture: {fileID: 2800000, guid: 06b73a738e4914f409aac1a112844316, type: 3}
-          m_Scale: {x: 2, y: 2}
+          m_Texture: {fileID: 0}
+          m_Scale: {x: 1, y: 1}
           m_Offset: {x: 0, y: 0}
       data:
         first:
@@ -27,28 +27,25 @@ Material:
           m_Texture: {fileID: 0}
           m_Scale: {x: 1, y: 1}
           m_Offset: {x: 0, y: 0}
+    m_Floats:
       data:
         first:
-          name: _GridAlphaTex
-        second:
-          m_Texture: {fileID: 2800000, guid: ff75a2d87f1484c479106c086a308950, type: 3}
-          m_Scale: {x: 6, y: 6}
-          m_Offset: {x: 0, y: 0}
-    m_Floats:
+          name: PixelSnap
+        second: 0
       data:
         first:
           name: _EmissionLM
         second: 0
+      data:
+        first:
+          name: _InvFade
+        second: 1
     m_Colors:
       data:
         first:
           name: _Color
-        second: {r: 1, g: 1, b: 1, a: 1}
+        second: {r: .940365136, g: 1, b: .382352948, a: 1}
       data:
         first:
-          name: _GridColor
-        second: {r: 1, g: .268965513, b: 0, a: 1}
-      data:
-        first:
-          name: _MainColor
-        second: {r: .654411793, g: .654411793, b: .654411793, a: 1}
+          name: _TintColor
+        second: {r: 1, g: .974442184, b: .0735294223, a: .227450982}

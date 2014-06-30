@@ -21,7 +21,7 @@
 
 		void surf (Input IN, inout SurfaceOutput o) {
 			half4 c = tex2D (_GridAlphaTex, IN.uv_GridAlphaTex);
-			float val = c.r + c.g + c.b;
+			float val = c.a;//c.r + c.g + c.b;
 			o.Albedo = ((1 - val) * _MainColor) + (val * _GridColor);
 			o.Emission = c.r * _GridColor;
 			o.Alpha = 1;

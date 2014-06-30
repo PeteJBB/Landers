@@ -4,6 +4,8 @@ using System.Collections;
 
 public class PlayerFlightControls : MonoBehaviour
 {
+    public Texture GunsightTexture;
+
 	const float _pitchStrength = 24;
 	const float _yawStrength = 30;
 	const float _rollStrength = 12;
@@ -27,7 +29,7 @@ public class PlayerFlightControls : MonoBehaviour
 	// Update is called once per frame
 	void Update()
 	{
-		deltaMultiplier = Time.deltaTime / 0.02f;
+		deltaMultiplier = Time.deltaTime / Time.fixedDeltaTime;
 		UpdateFlightControls();
 		
 		// reset
@@ -57,8 +59,9 @@ public class PlayerFlightControls : MonoBehaviour
 	    {
 	        // hover
 	        var thrustAngle = Mathf.Deg2Rad * Vector3.Angle(Physics.gravity, -transform.up);
-	        var energy = (rigidbody.mass * Physics.gravity.magnitude) -
-	                        (rigidbody.velocity.y * Mathf.Abs(rigidbody.velocity.y));
+	        var energy = (rigidbody.mass * Physics.gravity.magnitude);
+            energy -= (rigidbody.velocity.y * Mathf.Abs(rigidbody.velocity.y));
+
 	        var thrustNeeded = energy / Mathf.Cos(thrustAngle);
 	        _throttle = Mathf.Clamp(thrustNeeded / _enginePower, 0, 1);
 	    }
@@ -67,7 +70,7 @@ public class PlayerFlightControls : MonoBehaviour
 
 	    if(_isJetMode)
 	    {
-	        var thrust = 30000 * Time.fixedDeltaTime;
+	        var thrust = 500 * deltaMultiplier;
             this.rigidbody.AddRelativeForce(new Vector3(0,0, thrust));
 	    }
 
@@ -133,6 +136,10 @@ public class PlayerFlightControls : MonoBehaviour
 
 	    var mode = _isJetMode ? "On" : "Off";
         GUI.TextArea(new Rect(20, 80, 100, 20), "Jets: " + mode, Utility.BasicGuiStyle);
-		
+
+        // gunsight
+	    var rect = Utility.GetCenteredRectangle(new Vector2(Screen.width / 2f, Screen.height / 2f), 32, 32);
+        GUI.DrawTexture(rect, GunsightTexture);
+
 	}
 }

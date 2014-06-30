@@ -58,16 +58,11 @@ fixed4 _Background0, _Background1, _Background2, _Background3;
 void surf (Input IN, inout SurfaceOutput o) {
 	fixed4 splat_control = tex2D (_Control, IN.uv_Control);
 	
-	// get grid textures
-	fixed4 tex0 = tex2D (_Splat0, IN.uv_Splat0);
-	fixed4 tex1 = tex2D (_Splat1, IN.uv_Splat1);
-	fixed4 tex2 = tex2D (_Splat2, IN.uv_Splat2);
-	fixed4 tex3 = tex2D (_Splat3, IN.uv_Splat3);
-
-	fixed4 a0 = tex0.r + tex0.g + tex0.b;
-	fixed4 a1 = tex1.r + tex1.g + tex1.b;
-	fixed4 a2 = tex2.r + tex2.g + tex2.b;
-	fixed4 a3 = tex3.r + tex3.g + tex3.b;
+	// get grid alpha values
+	fixed4 a0 = tex2D (_Splat0, IN.uv_Splat0).a;
+	fixed4 a1 = tex2D (_Splat1, IN.uv_Splat1).a;
+	fixed4 a2 = tex2D (_Splat2, IN.uv_Splat2).a;
+	fixed4 a3 = tex2D (_Splat3, IN.uv_Splat3).a;
 
 	fixed4 emis;
 	emis  = splat_control.r * (a0 * _Color0);

@@ -30,9 +30,17 @@ public class Lander : MonoBehaviour
         {
             _hasLanded = true;
 
+            if (col.gameObject.tag == "Terrain")
+            {
+                // create pyramid
+                var obj = (GameObject)Instantiate(PyramidPrefab);
+                obj.transform.parent = col.transform.root;
+                obj.transform.position = transform.position;
+                
+            }
+
             DetatchParticles();
             Explode();
-            CreatePyramid(col.contacts[0].point);
 
             Destroy(gameObject);
         }
@@ -57,11 +65,5 @@ public class Lander : MonoBehaviour
         // explosion
         var exp = (GameObject)Instantiate(ImpactExplosion);
         exp.transform.position = transform.position;
-    }
-
-    private void CreatePyramid(Vector3 point)
-    {
-        var obj = (GameObject)Instantiate(PyramidPrefab);
-        obj.transform.position = transform.position;
     }
 }

@@ -25,12 +25,11 @@ public class MachineGun : MonoBehaviour
 
     private void Fire()
     {
-        var b = (GameObject)Instantiate(BulletPrefab);
         var pos = transform.position + transform.forward - transform.up;
-        pos.x += _isNextBulletOnLeft ? -1 : 1;
-        b.transform.position = pos;
-        b.rigidbody.velocity = rigidbody.velocity;
-        b.rigidbody.AddForce(transform.forward * 100);
+        pos += _isNextBulletOnLeft ? -transform.right : transform.right;
+        
+        var b = (GameObject)Instantiate(BulletPrefab, pos, transform.rotation);
+        b.rigidbody.AddForce(transform.forward * 150);
 
         _isNextBulletOnLeft = !_isNextBulletOnLeft;
         _lastFireTime = Time.fixedTime;
