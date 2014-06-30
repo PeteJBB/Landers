@@ -12,22 +12,39 @@ public class WorldMap : MonoBehaviour
 
 	GameObject _player;
 
+    private bool _isFullScreen;
+
 	void Start () 
 	{
 		_player = GameObject.FindGameObjectWithTag("Player");
 		camera.aspect = 1;
+	    
 	}
 
 	void Update () 
 	{
-        //var ratio = Screen.width / Screen.height;
-        //var height = MapSize / Screen.height;
-        //var width = height / ratio;
-        //var px = 1f - (Padding / Screen.width);
-        //var py = 1f - (Padding / Screen.height);
-        //camera.rect = new Rect(px - width, py - height, width, height);
+	    if (Input.GetKeyDown(KeyCode.M))
+	    {
+	        _isFullScreen = !_isFullScreen;
+	    }
 
-        camera.pixelRect = new Rect(Screen.width - Padding - MapSize, Screen.height - Padding - MapSize, MapSize, MapSize);
+	    if (_isFullScreen)
+	    {
+	        camera.rect = new Rect(0, 0, 1, 1);
+	        camera.orthographicSize = 3000;
+            camera.transform.position = new Vector3(0, 500, 0);
+            
+	    }
+        else
+        {
+            camera.pixelRect = new Rect(Screen.width - Padding - MapSize, Screen.height - Padding - MapSize, MapSize, MapSize);
+            camera.orthographicSize = 200;
+
+            // track player
+            var pos = _player.transform.position;
+            pos.y = 500;
+            camera.transform.position = pos;
+        }
 	}
 
 	void OnGUI()

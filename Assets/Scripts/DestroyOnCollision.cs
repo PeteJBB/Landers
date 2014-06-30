@@ -8,7 +8,25 @@ public class DestroyOnCollision : MonoBehaviour
     public float ExplosionRadius;
 
     private bool _isDestroyed;
-    
+
+    private void Update()
+    {
+        if(!_isDestroyed && transform.position.y < 0)
+        {
+            var point = transform.position;
+            var i = 0;
+            var y = point.y;
+            while (y < 0)
+            {
+                point -= rigidbody.velocity * Time.deltaTime;
+                y = point.y;
+                if (++i > 10) break;
+            }
+            Explode(point);
+            Destroy(gameObject);
+        }
+    }
+
     public void OnCollisionEnter(Collision col)
     {
         if (!_isDestroyed)
