@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 using System.Collections;
 
 public class Utility
@@ -237,11 +238,17 @@ public class Utility
 		return new Vector2(mapX, mapZ);
 	}
 
+    private static readonly Dictionary<Color, Texture2D> plainTextureDictionary = new Dictionary<Color, Texture2D>(); 
     public static Texture2D CreatePlainColorTexture(Color color)
     {
+        if (plainTextureDictionary.ContainsKey(color))
+            return plainTextureDictionary[color];
+
         var tex = new Texture2D(1, 1);
         tex.SetPixel(0, 0, color);
         tex.Apply();
+
+        plainTextureDictionary.Add(color, tex);
         return tex;
     }
 }

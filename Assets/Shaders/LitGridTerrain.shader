@@ -59,10 +59,10 @@ void surf (Input IN, inout SurfaceOutput o) {
 	fixed4 splat_control = tex2D (_Control, IN.uv_Control);
 	
 	// get grid alpha values
-	fixed4 a0 = tex2D (_Splat0, IN.uv_Splat0).a;
-	fixed4 a1 = tex2D (_Splat1, IN.uv_Splat1).a;
-	fixed4 a2 = tex2D (_Splat2, IN.uv_Splat2).a;
-	fixed4 a3 = tex2D (_Splat3, IN.uv_Splat3).a;
+	fixed4 a0 = tex2D (_Normal0, IN.uv_Splat0).a;
+	fixed4 a1 = tex2D (_Normal1, IN.uv_Splat1).a;
+	fixed4 a2 = tex2D (_Normal2, IN.uv_Splat2).a;
+	fixed4 a3 = tex2D (_Normal3, IN.uv_Splat3).a;
 
 	fixed4 emis;
 	emis  = splat_control.r * (a0 * _Color0);

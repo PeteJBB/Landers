@@ -6,9 +6,9 @@ public class PlayerFlightControls : MonoBehaviour
 {
     public Texture GunsightTexture;
 
-    private const float _pitchStrength = 34;//24;
+    private const float _pitchStrength = 40;//24;
     private const float _yawStrength = 45;//30;
-    private const float _rollStrength = 24;//12;
+    private const float _rollStrength = 12;//12;
 
     const float _enginePower = 400;
     const float _jetPower = 500;
@@ -54,53 +54,23 @@ public class PlayerFlightControls : MonoBehaviour
 
     void UpdateFlightControls()
 	{
-	    if (Input.GetKey(KeyCode.W))
-	    {
-	        _throttle = _isJetMode
-                ? Mathf.Clamp(_throttle + 1f * Time.deltaTime, 0, 1)
-	            : 1;
-	    }
-	    else if (Input.GetKey(KeyCode.S))
-	    {
-            _throttle = _isJetMode
-                ? Mathf.Clamp(_throttle - 1f * Time.deltaTime, 0, 1)
-                : 0;
-	    }
-	    else if(!_isJetMode)
-	    {
-	        // hover
-	        var thrustAngle = Mathf.Deg2Rad * Vector3.Angle(Physics.gravity, -transform.up);
-	        var energy = (rigidbody.mass * Physics.gravity.magnitude);
+        if (!_isJetMode)
+        {
+            // calculate hover throttle
+            var thrustAngle = Mathf.Deg2Rad * Vector3.Angle(Physics.gravity, -transform.up);
+            var energy = (rigidbody.mass * Physics.gravity.magnitude);
             energy -= (rigidbody.velocity.y * Mathf.Abs(rigidbody.velocity.y));
 
-	        var thrustNeeded = energy / Mathf.Cos(thrustAngle);
-	        _throttle = Mathf.Clamp(thrustNeeded / _enginePower, 0, 1);
-	    }
+            var thrustNeeded = energy / Mathf.Cos(thrustAngle);
+            _throttle = Mathf.Clamp(thrustNeeded / _enginePower, 0, 1);
+        }
 
-        
-		// pitch
-		if (Input.GetKey(KeyCode.UpArrow))
-		    _pitchControl = 1;
-		else if (Input.GetKey(KeyCode.DownArrow))
-		    _pitchControl = -1;
-		else
-		    _pitchControl = 0;
+        _throttle += Input.GetAxis("Throttle");
+        _throttle = Mathf.Clamp(_throttle, 0, 1);
 
-		// yaw
-		if (Input.GetKey(KeyCode.D))
-		    _yawControl = 1;
-		else if (Input.GetKey(KeyCode.A))
-		    _yawControl = -1;
-		else
-		    _yawControl = 0;
-		
-		// roll
-		if (Input.GetKey(KeyCode.LeftArrow))
-		    _rollControl = 1;
-		else if (Input.GetKey(KeyCode.RightArrow))
-		    _rollControl = -1;
-		else
-		    _rollControl = 0;
+        _pitchControl = Input.GetAxis("Pitch");
+        _yawControl = Input.GetAxis("Yaw");
+        _rollControl = Input.GetAxis("Roll");
 
         // aim MG
         var mg = GetComponent<MachineGun>();
@@ -111,7 +81,7 @@ public class PlayerFlightControls : MonoBehaviour
     {
         // pitch / yaw / roll
         rigidbody.AddRelativeTorque(new Vector3(_pitchStrength * _pitchControl * deltaMultiplier, 0, 0));
-        rigidbody.AddRelativeTorque(new Vector3(0, _yawStrength * _yawControl * deltaMultiplier, -_rollStrength * 0.5f * Time.deltaTime));
+        rigidbody.AddRelativeTorque(new Vector3(0, _yawStrength * _yawControl * deltaMultiplier, 0));
         rigidbody.AddRelativeTorque(new Vector3(0, 0, _rollStrength * _rollControl * deltaMultiplier));
 
         // thrust / lift
@@ -138,7 +108,7 @@ public class PlayerFlightControls : MonoBehaviour
                 -relativeVel.y * Mathf.Abs(relativeVel.y) * 0.03f,
                 relativeVel.x * Mathf.Abs(relativeVel.x) * 0.05f, //0.1f,
                 0
-                );
+            );
             rigidbody.AddRelativeTorque(correctionVector * deltaMultiplier);
         }
         else

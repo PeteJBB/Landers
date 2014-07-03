@@ -20,8 +20,8 @@ public class MachineGun : MonoBehaviour
     {
         if ((Input.GetKey(KeyCode.Space) || Input.GetMouseButton(0)) && Time.fixedTime - _lastFireTime > _fireDelay)
         {
-            Screen.lockCursor = true;
-            Screen.showCursor = false;
+            //Screen.lockCursor = true;
+            //Screen.showCursor = false;
             Fire();
         }
     }

@@ -10,7 +10,7 @@ public class PlayerFlightControlsAlt : MonoBehaviour
 
     private const float _pitchStrength = 34;//24;
     private const float _yawStrength = 45;//30;
-    private const float _rollStrength = 24;//12;
+    private const float _rollStrength = 40;//12;
 
     const float _enginePower = 400;
     const float _jetPower = 500;
@@ -91,39 +91,52 @@ public class PlayerFlightControlsAlt : MonoBehaviour
 
             _pitchControl = aimY;
             _yawControl = aimX;
-            //_rollControl = -aimX * 0.5f;
 
             // calculate roll required to cancel lateral motion
-            var maxRoll = 90f;
-            var maxSpeed = 20f; // max roll happens at this speed
-            var relativeSpeed = transform.worldToLocalMatrix * rigidbody.velocity;
+            const float maxRoll = 90f;
 
             var currentRoll = transform.localEulerAngles.z;
             if (currentRoll > 180) currentRoll -= 360;
+            float desiredRoll;
+            var fixedRoll = false;
+            var maxSpeed = 15f; // max roll happens at this speed
+            var relativeSpeed = transform.worldToLocalMatrix * rigidbody.velocity;
 
-            // calc desired roll to cancel lateral movement
-            var desiredRoll = (relativeSpeed.x / maxSpeed) * maxRoll;
+                
+            if (Input.GetKey(KeyCode.A))
+            {
+                fixedRoll = true;
+                desiredRoll = 45f;
+            }
+            else if (Input.GetKey(KeyCode.D))
+            {
+                fixedRoll = true;
+                desiredRoll = -45f;
+            }
+            else
+            {
+                // calc desired roll to cancel lateral movement
+                desiredRoll = (relativeSpeed.x / maxSpeed) * maxRoll;
+            }
+
             var diff = desiredRoll - currentRoll;
 
-            // calc force required to reach desired roll, account for current roll rate
-            var amt = (diff * diff * Mathf.Sign(diff)) / (maxRoll * maxRoll);
-            var rollRate = Vector3.Dot(rigidbody.angularVelocity, transform.forward);
-            //print(rollRate);
-            var rollForce = rigidbody.mass * rollRate;
-            amt -= rollForce / _rollStrength;
-            
-            // include forward speed and yaw control in calculating rollcontrol
-            amt += (relativeSpeed.z / maxSpeed) * -_yawControl;
+            // calc force required to reach desired roll
+            _rollControl = (diff * diff * Mathf.Sign(diff)) / (maxRoll * maxRoll);
 
-            _rollControl = Mathf.Clamp(amt, -1f, 1f);
+            if (!fixedRoll)
+            {
+                // account for current roll rate so we dont end up over correcting
+                var rollRate = Vector3.Dot(rigidbody.angularVelocity, transform.forward);
+                var rollForce = rigidbody.mass * rollRate;
+                _rollControl -= rollForce / _rollStrength;
 
+                // include forward speed and yaw control in calculating rollcontrol
+                _rollControl += (relativeSpeed.z / maxSpeed) * -_yawControl;
+            }
+
+            _rollControl = Mathf.Clamp(_rollControl, -1f, 1f);
         }
-
-        // yaw
-        if (Input.GetKey(KeyCode.A))
-            _yawControl = -1;
-        else if (Input.GetKey(KeyCode.D))
-            _yawControl = 1;
         
         // aim machinegun
         var center = new Vector2(Screen.width / 2f, Screen.height / 2f);
