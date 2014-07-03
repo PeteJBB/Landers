@@ -6,9 +6,9 @@ public class PlayerFlightControls : MonoBehaviour
 {
     public Texture GunsightTexture;
 
-	const float _pitchStrength = 24;
-	const float _yawStrength = 30;
-	const float _rollStrength = 12;
+    private const float _pitchStrength = 34;//24;
+    private const float _yawStrength = 45;//30;
+    private const float _rollStrength = 24;//12;
 
     const float _enginePower = 400;
     const float _jetPower = 500;
@@ -101,6 +101,10 @@ public class PlayerFlightControls : MonoBehaviour
 		    _rollControl = -1;
 		else
 		    _rollControl = 0;
+
+        // aim MG
+        var mg = GetComponent<MachineGun>();
+        mg.AimRotation = Quaternion.LookRotation(transform.forward, Vector3.up);
 	}
 
     private void UpdatePhysics()

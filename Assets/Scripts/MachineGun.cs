@@ -5,6 +5,7 @@ using System.Collections;
 public class MachineGun : MonoBehaviour
 {
     public GameObject BulletPrefab;
+    public Quaternion AimRotation;
 
     private float _fireDelay = 0.1f;
     private float _lastFireTime = 0;
@@ -12,13 +13,15 @@ public class MachineGun : MonoBehaviour
 
     void Start()
     {
-
+        
     }
 
     void Update()
     {
-        if (Input.GetKey(KeyCode.Space) && Time.fixedTime - _lastFireTime > _fireDelay)
+        if ((Input.GetKey(KeyCode.Space) || Input.GetMouseButton(0)) && Time.fixedTime - _lastFireTime > _fireDelay)
         {
+            Screen.lockCursor = true;
+            Screen.showCursor = false;
             Fire();
         }
     }
@@ -28,9 +31,9 @@ public class MachineGun : MonoBehaviour
         var pos = transform.position + transform.forward - transform.up;
         pos += _isNextBulletOnLeft ? -transform.right : transform.right;
         
-        var b = (GameObject)Instantiate(BulletPrefab, pos, transform.rotation);
+        var b = (GameObject)Instantiate(BulletPrefab, pos, AimRotation);
         b.rigidbody.velocity = rigidbody.velocity;
-        b.rigidbody.AddForce(transform.forward * 200);
+        b.rigidbody.AddForce(b.transform.forward * 200);
 
         _isNextBulletOnLeft = !_isNextBulletOnLeft;
         _lastFireTime = Time.fixedTime;

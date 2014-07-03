@@ -236,4 +236,12 @@ public class Utility
 		
 		return new Vector2(mapX, mapZ);
 	}
+
+    public static Texture2D CreatePlainColorTexture(Color color)
+    {
+        var tex = new Texture2D(1, 1);
+        tex.SetPixel(0, 0, color);
+        tex.Apply();
+        return tex;
+    }
 }
