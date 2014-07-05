@@ -13,13 +13,13 @@ InputManager:
     altNegativeButton: 
     altPositiveButton: 
     gravity: 5
-    dead: .00100000005
-    sensitivity: 5
+    dead: .189999998
+    sensitivity: 1
     snap: 0
-    invert: 0
-    type: 0
-    axis: 0
-    joyNum: 0
+    invert: 1
+    type: 2
+    axis: 3
+    joyNum: 1
   - serializedVersion: 3
     m_Name: Pitch
     descriptiveName: 
@@ -29,13 +29,13 @@ InputManager:
     altNegativeButton: 
     altPositiveButton: 
     gravity: 5
-    dead: .00100000005
-    sensitivity: 5
+    dead: .189999998
+    sensitivity: 1
     snap: 0
-    invert: 0
-    type: 0
-    axis: 0
-    joyNum: 0
+    invert: 1
+    type: 2
+    axis: 4
+    joyNum: 1
   - serializedVersion: 3
     m_Name: Yaw
     descriptiveName: 
@@ -45,13 +45,13 @@ InputManager:
     altNegativeButton: 
     altPositiveButton: 
     gravity: 5
-    dead: .00100000005
-    sensitivity: 5
+    dead: .189999998
+    sensitivity: 1
     snap: 0
     invert: 0
-    type: 0
+    type: 2
     axis: 0
-    joyNum: 0
+    joyNum: 1
   - serializedVersion: 3
     m_Name: Throttle
     descriptiveName: 
@@ -61,10 +61,58 @@ InputManager:
     altNegativeButton: 
     altPositiveButton: 
     gravity: 5
-    dead: .00100000005
-    sensitivity: 5
+    dead: .189999998
+    sensitivity: 1
+    snap: 0
+    invert: 1
+    type: 2
+    axis: 1
+    joyNum: 1
+  - serializedVersion: 3
+    m_Name: Fire
+    descriptiveName: 
+    descriptiveNegativeName: 
+    negativeButton: 
+    positiveButton: space
+    altNegativeButton: 
+    altPositiveButton: 
+    gravity: 5
+    dead: .189999998
+    sensitivity: 1
+    snap: 0
+    invert: 1
+    type: 2
+    axis: 2
+    joyNum: 1
+  - serializedVersion: 3
+    m_Name: Mouse X
+    descriptiveName: 
+    descriptiveNegativeName: 
+    negativeButton: 
+    positiveButton: 
+    altNegativeButton: 
+    altPositiveButton: 
+    gravity: 0
+    dead: .189999998
+    sensitivity: .100000001
     snap: 0
     invert: 0
-    type: 0
+    type: 1
     axis: 0
+    joyNum: 0
+  - serializedVersion: 3
+    m_Name: Mouse Y
+    descriptiveName: 
+    descriptiveNegativeName: 
+    negativeButton: 
+    positiveButton: 
+    altNegativeButton: 
+    altPositiveButton: 
+    gravity: 0
+    dead: .189999998
+    sensitivity: .100000001
+    snap: 0
+    invert: 1
+    type: 1
+    axis: 1
     joyNum: 0
