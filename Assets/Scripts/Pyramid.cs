@@ -29,18 +29,18 @@ public class Pyramid : MonoBehaviour
         if (age <= _buildTime)
         {
             // build structure
-            var y = Mathf.Lerp(-_structure.transform.localScale.y, 0, age/_buildTime);
+            var y = Mathf.Lerp(-_structure.transform.localScale.y, -0.2f, age/_buildTime);
             var pos = _structure.localPosition;
             pos.y = y;
             _structure.localPosition = pos;
         }
 
-       if(Time.fixedTime - _lastPaintTime > _paintDelay)
-        {
-            //PaintTerrain();
-            _nextPaintSize += 2;
-            _lastPaintTime = Time.fixedTime;
-        }
+        //if(Time.fixedTime - _lastPaintTime > _paintDelay)
+        //{
+        //    PaintTerrain();
+        //    _nextPaintSize += 2;
+        //    _lastPaintTime = Time.fixedTime;
+        //}
 
     }
 

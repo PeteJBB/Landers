@@ -204,11 +204,6 @@ public class PlayerFlightControlsAlt : MonoBehaviour
 
     }
 
-    void ApplyDamage(float amount)
-    {
-        print("You've been hit! (" + amount + ")");
-    }
-
     void OnGUI()
     {
         GUI.TextArea(new Rect(20, 20, 100, 20), "Alt: " + transform.position.y, Utility.BasicGuiStyle);

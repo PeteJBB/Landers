@@ -27,7 +27,7 @@ public class PlayerFlightControls : MonoBehaviour
 	// Use this for initialization
 	void Start()
 	{
-		
+	    rigidbody.centerOfMass = new Vector3(0, -1, 0);
 	}
 	
 	// Update is called once per frame
@@ -134,11 +134,6 @@ public class PlayerFlightControls : MonoBehaviour
 
         
     }
-
-    void ApplyDamage(float amount)
-	{
-		print("You've been hit! (" + amount + ")");
-	}
 	
 	void OnGUI()
 	{

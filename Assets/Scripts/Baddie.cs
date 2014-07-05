@@ -63,7 +63,6 @@ public class Baddie : MonoBehaviour
             if (Vector3.Distance(transform.position, _agent.destination) < 1)
             {
                 // arrived!
-                print("arrived!");
                 _state = BaddieState.Idle;
                 _idleStartTime = Time.fixedTime;
             }

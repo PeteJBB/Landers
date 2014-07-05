@@ -17,8 +17,6 @@ public class WorldMap : MonoBehaviour
 	void Start () 
 	{
 		_player = GameObject.FindGameObjectWithTag("Player");
-		camera.aspect = 1;
-	    
 	}
 
 	void Update () 
@@ -31,6 +29,7 @@ public class WorldMap : MonoBehaviour
 	    if (_isFullScreen)
 	    {
 	        camera.rect = new Rect(0, 0, 1, 1);
+	        camera.aspect = (float)Screen.width / Screen.height;
 	        camera.orthographicSize = 3000;
             camera.transform.position = new Vector3(0, 500, 0);
             
@@ -39,6 +38,7 @@ public class WorldMap : MonoBehaviour
         {
             camera.pixelRect = new Rect(Screen.width - Padding - MapSize, Screen.height - Padding - MapSize, MapSize, MapSize);
             camera.orthographicSize = 200;
+            camera.aspect = 1;
 
             // track player
             var pos = _player.transform.position;

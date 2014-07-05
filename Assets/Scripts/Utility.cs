@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using System.Collections;
 
@@ -250,5 +251,17 @@ public class Utility
 
         plainTextureDictionary.Add(color, tex);
         return tex;
+    }
+
+    public static Terrain GetTerrainByWorldPos(Vector3 position)
+    {
+        foreach (var t in Terrain.activeTerrains)
+        {
+            var pos = t.transform.position;
+            var rect = new Rect(pos.x, pos.z, t.terrainData.heightmapWidth, t.terrainData.heightmapHeight);
+            if (rect.Contains(position))
+                return t;
+        }
+        return null;
     }
 }

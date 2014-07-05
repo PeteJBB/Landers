@@ -32,11 +32,14 @@ public class Lander : MonoBehaviour
 
             if (col.gameObject.tag == "Terrain")
             {
-                // create pyramid
+                 // create pyramid
                 var obj = (GameObject)Instantiate(PyramidPrefab);
                 obj.transform.parent = col.transform.root;
-                obj.transform.position = transform.position;
-                
+
+                var terrain = col.gameObject.GetComponent<Terrain>();
+                var pos = transform.position;
+                pos.y = terrain.SampleHeight(pos) + terrain.transform.position.y;
+                obj.transform.position = pos;
             }
 
             DetatchParticles();

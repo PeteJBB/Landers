@@ -5,8 +5,8 @@ public class BaddieFactory : MonoBehaviour
 {
     public GameObject BaddiePrefab;
 
-    private const float SpawnTimeMin = 3;
-    private const float SpawnTimeMax = 10;
+    private const float SpawnTimeMin = 10;
+    private const float SpawnTimeMax = 15;
 
     private float _nextSpawnTime;
 
