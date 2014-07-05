@@ -32,7 +32,7 @@ public class DestroyOnCollision : MonoBehaviour
         if (!_isDestroyed)
         {
             var point = GetExplosionPoint(col.collider);
-            Explode(point);
+            Explode(col.contacts[0].point);
             Destroy(gameObject);
         }
     }

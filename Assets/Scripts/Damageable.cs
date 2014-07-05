@@ -28,7 +28,7 @@ public class Damageable : MonoBehaviour
     void OnGUI()
     {
         var dist = Vector3.Distance(Camera.main.transform.position, transform.position);
-        if (dist < 400)
+        if (dist < 200)
         {
             //var combinedBounds = renderer != null ? renderer.bounds : new Bounds(transform.position, Vector3.zero);
             //foreach(var r in GetComponentsInChildren<Renderer>()) 

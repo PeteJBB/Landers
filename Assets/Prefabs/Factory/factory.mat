@@ -36,7 +36,7 @@ Material:
       data:
         first:
           name: _GridColor
-        second: {r: 0, g: .337931156, b: 1, a: 1}
+        second: {r: 0, g: .751724005, b: 1, a: 1}
       data:
         first:
           name: _MainColor
