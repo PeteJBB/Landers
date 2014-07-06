@@ -23,7 +23,6 @@ public class PlayerFlightControls : MonoBehaviour
 
     private bool _isJetMode = false;
 	
-	
 	// Use this for initialization
 	void Start()
 	{
@@ -42,7 +41,7 @@ public class PlayerFlightControls : MonoBehaviour
 		}
 
         // jet mode
-        if (Input.GetKeyDown(KeyCode.Return))
+        if (Input.GetKeyDown(KeyCode.Return) || Input.GetButtonDown("Transform"))
         {
             _isJetMode = !_isJetMode;
             _throttle = 1;

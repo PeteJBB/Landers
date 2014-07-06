@@ -87,6 +87,15 @@ public class Baddie : MonoBehaviour
         }
         else if (_state == BaddieState.Attacking)
         {
+            if (_target == null)
+            {
+                // no target set or target destroyed
+                _state = BaddieState.Idle;
+                _idleStartTime = Time.fixedTime;
+                _beam.enabled = false;
+                return;
+            }
+
             if (!_beam.enabled)
             {
                 if (Time.fixedTime - _lastAttackTime > _attackDelay + _beamTime)
