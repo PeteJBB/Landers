@@ -18,7 +18,7 @@ public class MachineGun : MonoBehaviour
 
     void Update()
     {
-        if ((Input.GetAxis("Fire") > 0 /*|| Input.GetMouseButton(0)*/) && Time.fixedTime - _lastFireTime > _fireDelay)
+        if (InputManager.GetButton(InputAxis.Fire) && Time.fixedTime - _lastFireTime > _fireDelay)
         {
             //Screen.lockCursor = true;
             //Screen.showCursor = false;

@@ -8,11 +8,11 @@ public class Pyramid : MonoBehaviour
     private Transform _structure;
     
     private float _birthday;
-    private float _buildTime = 10;
+    private const float _buildTime = 10;
 
-    private float _paintDelay = 1;
-    private float _lastPaintTime = 0;
-    private int _nextPaintSize = 3;
+    //private float _paintDelay = 1;
+    //private float _lastPaintTime = 0;
+    //private int _nextPaintSize = 3;
 
     
 
@@ -20,7 +20,6 @@ public class Pyramid : MonoBehaviour
     {
         _structure = transform.FindChild("structure");
         _birthday = Time.fixedTime;
-        //PaintTerrain();
     }
 
     void Update()
@@ -44,24 +43,24 @@ public class Pyramid : MonoBehaviour
 
     }
 
-    private void PaintTerrain()
-    {
-        // paint terrain
-        var terrain = Terrain.activeTerrain;
-        var alphaCoords = Utility.GetAlphaMapCoords(transform.position, terrain);
+    //private void PaintTerrain()
+    //{
+    //    // paint terrain
+    //    var terrain = Terrain.activeTerrain;
+    //    var alphaCoords = Utility.GetAlphaMapCoords(transform.position, terrain);
 
-        var mapX = (int)Mathf.Round(alphaCoords.x - (_nextPaintSize / 2f));
-        var mapY = (int)Mathf.Round(alphaCoords.y - (_nextPaintSize / 2f));
+    //    var mapX = (int)Mathf.Round(alphaCoords.x - (_nextPaintSize / 2f));
+    //    var mapY = (int)Mathf.Round(alphaCoords.y - (_nextPaintSize / 2f));
 
-        var data = terrain.terrainData.GetAlphamaps(mapX, mapY, _nextPaintSize, _nextPaintSize);
-        for (var x = 0; x < _nextPaintSize; x++)
-        {
-            for (var y = 0; y < _nextPaintSize; y++)
-            {
-                data[x, y, 0] = 0;
-                data[x, y, 1] = 1;
-            }
-        }
-        terrain.terrainData.SetAlphamaps(mapX, mapY, data);
-    }
+    //    var data = terrain.terrainData.GetAlphamaps(mapX, mapY, _nextPaintSize, _nextPaintSize);
+    //    for (var x = 0; x < _nextPaintSize; x++)
+    //    {
+    //        for (var y = 0; y < _nextPaintSize; y++)
+    //        {
+    //            data[x, y, 0] = 0;
+    //            data[x, y, 1] = 1;
+    //        }
+    //    }
+    //    terrain.terrainData.SetAlphamaps(mapX, mapY, data);
+    //}
 }

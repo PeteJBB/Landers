@@ -5,14 +5,13 @@ public class BaddieFactory : MonoBehaviour
 {
     public GameObject BaddiePrefab;
 
-    private const float SpawnTimeMin = 10;
-    private const float SpawnTimeMax = 15;
+    private const float SpawnTime = 15;
 
     private float _nextSpawnTime;
 
     void Start()
     {
-        _nextSpawnTime = Time.fixedTime + Random.Range(SpawnTimeMin, SpawnTimeMax);
+        _nextSpawnTime = Time.fixedTime + SpawnTime;
     }
 
     void Update()
@@ -21,7 +20,7 @@ public class BaddieFactory : MonoBehaviour
         {
             var baddie = (GameObject)Instantiate(BaddiePrefab, transform.position, Quaternion.Euler(0, Random.Range(0, 359), 0));
             baddie.transform.parent = transform.root;
-            _nextSpawnTime = Time.fixedTime + Random.Range(SpawnTimeMin, SpawnTimeMax);
+            _nextSpawnTime = Time.fixedTime + SpawnTime;
         }
     }
 }
