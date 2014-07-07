@@ -6,6 +6,11 @@ public class Damageable : MonoBehaviour
     public float MaxHealth;
     public GameObject ExplosionPrefab;
 
+    /// <summary>
+    /// Team 0 means anyone can damage me, otherwise only take damage from other teams
+    /// </summary>
+    public int Team;
+
     private float _health;
     private void Start()
     {

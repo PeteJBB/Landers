@@ -19,7 +19,6 @@ public class BaddieFactory : MonoBehaviour
         if (Time.fixedTime >= _nextSpawnTime)
         {
             var baddie = (GameObject)Instantiate(BaddiePrefab, transform.position, Quaternion.Euler(0, Random.Range(0, 359), 0));
-            baddie.transform.parent = transform.root;
             _nextSpawnTime = Time.fixedTime + SpawnTime;
         }
     }

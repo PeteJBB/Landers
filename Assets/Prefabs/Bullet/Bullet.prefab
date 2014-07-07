@@ -175,6 +175,7 @@ MonoBehaviour:
   ExplosionPrefab: {fileID: 100004, guid: 6052659339a9dad40b32e8829ae50d14, type: 2}
   ExplosionRadius: 5
   ExplosionDamage: 5
+  Team: 1
 --- !u!114 &11400004
 MonoBehaviour:
   m_ObjectHideFlags: 1

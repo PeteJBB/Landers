@@ -34,7 +34,6 @@ public class Lander : MonoBehaviour
             {
                  // create pyramid
                 var obj = (GameObject)Instantiate(PyramidPrefab);
-                obj.transform.parent = col.transform.root;
 
                 var terrain = col.gameObject.GetComponent<Terrain>();
                 var pos = transform.position;

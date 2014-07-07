@@ -35,6 +35,9 @@ public class MachineGun : MonoBehaviour
         b.rigidbody.velocity = rigidbody.velocity;
         b.rigidbody.AddForce(b.transform.forward * 400);
 
+        var projectile = b.GetComponent<Projectile>();
+        projectile.Team = 1;
+
         _isNextBulletOnLeft = !_isNextBulletOnLeft;
         _lastFireTime = Time.fixedTime;
     }

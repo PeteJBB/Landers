@@ -1,4 +1,5 @@
-﻿using System.Runtime.InteropServices;
+﻿using System;
+using System.Runtime.InteropServices;
 using UnityEngine;
 using System.Collections;
 
@@ -64,7 +65,11 @@ public class PlayerFlightControls : MonoBehaviour
             _throttle = Mathf.Clamp(thrustNeeded / _enginePower, 0, 1);
         }
 
-        _throttle += InputManager.GetAxis(InputAxis.Throttle);
+        var throt = InputManager.GetAxis(InputAxis.Throttle);
+        if (_isJetMode)
+            _throttle += throt * Time.deltaTime;
+        else
+            _throttle += throt;
         _throttle = Mathf.Clamp(_throttle, 0, 1);
 
         _pitchControl = InputManager.GetAxis(InputAxis.Pitch);
@@ -139,16 +144,12 @@ public class PlayerFlightControls : MonoBehaviour
 		GUI.TextArea(new Rect(20, 20, 100, 20), "Alt: " + transform.position.y, Utility.BasicGuiStyle );
 		GUI.TextArea(new Rect(20, 50, 100, 20), "Throttle: " + Mathf.Round(_throttle * 100) + "%", Utility.BasicGuiStyle);
         GUI.TextArea(new Rect(20, 80, 100, 20), "Airspeed: " + Mathf.Round(rigidbody.velocity.magnitude), Utility.BasicGuiStyle);
-
+        
 	    var mode = _isJetMode ? "On" : "Off";
         GUI.TextArea(new Rect(20, 110, 100, 20), "Jets: " + mode, Utility.BasicGuiStyle);
 
         // gunsight
 	    var rect = Utility.GetCenteredRectangle(new Vector2(Screen.width / 2f, Screen.height / 2f), 32, 32);
         GUI.DrawTexture(rect, GunsightTexture);
-
-
-        GUI.TextArea(new Rect(20, 140, 100, 20), "Pitch: " + InputManager.GetAxis(InputAxis.Pitch), Utility.BasicGuiStyle);
-
 	}
 }

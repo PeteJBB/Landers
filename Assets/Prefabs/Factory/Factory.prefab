@@ -144,7 +144,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100008}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 45.9963379, y: .870841742, z: 5.80444336}
+  m_LocalPosition: {x: -1677.95825, y: .870841742, z: 5.80444336}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 400006}
@@ -298,6 +298,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MaxHealth: 100
   ExplosionPrefab: {fileID: 100006, guid: e4c8967fa024a574fb768483889f674b, type: 2}
+  Team: 1
 --- !u!136 &13600000
 CapsuleCollider:
   m_ObjectHideFlags: 1

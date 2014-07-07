@@ -18,22 +18,23 @@ public class Baddie : MonoBehaviour
     private LineRenderer _beam;
     private NavMeshAgent _agent;
     private Terrain _terrain;
-    private Transform _island;
     private BaddieState _state;
-    private Transform _target;
+    private GameObject _target;
 
     
     void Start()
     {
         _state = BaddieState.Idle;
-        _island = transform.root;
-        _terrain = _island.FindChild("Terrain").GetComponent<Terrain>();
         _agent = GetComponent<NavMeshAgent>();
         _beam = GetComponent<LineRenderer>();
     }
 
     void Update()
     {
+        _terrain = Utility.GetTerrainByWorldPos(transform.position);
+        if (_terrain == null)
+            return;
+
         if (_state == BaddieState.Idle)
         {
             if (Time.fixedTime - _idleStartTime > _idleWaitTime)
@@ -42,7 +43,7 @@ public class Baddie : MonoBehaviour
                 _target = GetNearestTarget();
                 if (_target != null)
                 {
-                    _agent.SetDestination(_target.position);
+                    _agent.SetDestination(_target.transform.position);
                     _state = BaddieState.MovingToTarget;
                 }
                 else
@@ -77,7 +78,7 @@ public class Baddie : MonoBehaviour
                 return;
             }
 
-            var distToTarget = Vector3.Distance(transform.position, _target.position);
+            var distToTarget = Vector3.Distance(transform.position, _target.transform.position);
             if (distToTarget < _attackRange)
             {
                 // in range, attack
@@ -103,7 +104,7 @@ public class Baddie : MonoBehaviour
                     // turn beam on
                     _beam.useWorldSpace = true;
                     var start = transform.position + (Vector3.up * 1.3f);
-                    var end = _target.position;
+                    var end = _target.transform.position;
                     end.y = start.y;
                     _beam.SetPosition(0, start);
                     _beam.SetPosition(1, end);
@@ -124,7 +125,7 @@ public class Baddie : MonoBehaviour
                     var x = Mathf.Sin(angle) * radius;
                     var z = Mathf.Cos(angle) * radius;
 
-                    var point = new Vector3(x, 0, z) + _target.position;
+                    var point = new Vector3(x, 0, z) + _target.transform.position;
                     point.y = _terrain.SampleHeight(point);
                     _agent.SetDestination(point);
                 }
@@ -132,7 +133,7 @@ public class Baddie : MonoBehaviour
                 {
                     // update beam pos
                     var start = transform.position + (Vector3.up * 1.3f);
-                    var end = _target.position;
+                    var end = _target.transform.position;
                     end.y = start.y;
                     _beam.SetPosition(0, start);
                     _beam.SetPosition(1, end);
@@ -146,37 +147,62 @@ public class Baddie : MonoBehaviour
         _beam.enabled = true;
     }
 
-    private Transform GetNearestTarget()
+    private GameObject GetNearestTarget()
     {
-        var targets = _island.transform.Cast<Transform>().Where(x => x.tag == "FriendlyStructure").ToArray();
+        var targets = GameObject.FindGameObjectsWithTag("FriendlyStructure");
         if (targets.Length == 0)
         {
             return null;
         }
 
+        var searchArea = GetTerrainRect();
+
         // find the closest one
-        var closest = targets[0];
-        var dist = Vector3.Distance(transform.position, closest.position);
+        GameObject closest = null;
+        float dist = 0;
         for (var i = 1; i < targets.Length; i++)
         {
             var t = targets[i];
-            var d = Vector3.Distance(transform.position, t.position);
-            if (d < dist)
+            if(!searchArea.Contains(new Vector2(t.transform.position.x, t.transform.position.z)))
+                continue;
+
+            if (closest == null)
+            {
                 closest = t;
+                dist = Vector3.Distance(transform.position, t.transform.position);
+                continue;
+            }
+
+            var d = Vector3.Distance(transform.position, t.transform.position);
+            if (d < dist)
+            {
+                closest = t;
+                dist = Vector3.Distance(transform.position, t.transform.position);
+            }
         }
-
         return closest;
-
     }
 
     private Vector3 GetRandomDestination()
     {
-        var x = Random.Range(transform.root.position.x, transform.root.position.x + _terrain.terrainData.heightmapWidth);
-        var z = Random.Range(transform.root.position.z, transform.root.position.z + _terrain.terrainData.heightmapHeight);
-        var dest = new Vector3(x,0,z);
+        var rect = GetTerrainRect();
+        var x = Random.Range(rect.xMin, rect.xMax);
+        var z = Random.Range(rect.yMin, rect.yMax);
+        var dest = new Vector3(x, 0, z);
         dest.y = _terrain.SampleHeight(dest);
 
         return dest;
+    }
+
+    private Rect GetTerrainRect()
+    {
+        var rect = new Rect(
+            _terrain.transform.position.x,
+            _terrain.transform.position.z,
+            _terrain.terrainData.heightmapWidth,
+            _terrain.terrainData.heightmapHeight);
+
+        return rect;
     }
 
     void  OnDrawGizmos()
