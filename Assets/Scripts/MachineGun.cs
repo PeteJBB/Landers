@@ -7,7 +7,7 @@ public class MachineGun : MonoBehaviour
     public GameObject BulletPrefab;
     public Quaternion AimRotation;
 
-    private float _fireDelay = 0.1f;
+    private float _fireDelay = 0.06f;
     private float _lastFireTime = 0;
     private bool _isNextBulletOnLeft = false;
 
@@ -18,7 +18,7 @@ public class MachineGun : MonoBehaviour
 
     void Update()
     {
-        if (InputManager.GetButton(InputAxis.Fire) && Time.fixedTime - _lastFireTime > _fireDelay)
+        if (InputManager.GetButton(InputMapping.Fire) && Time.fixedTime - _lastFireTime > _fireDelay)
         {
             //Screen.lockCursor = true;
             //Screen.showCursor = false;

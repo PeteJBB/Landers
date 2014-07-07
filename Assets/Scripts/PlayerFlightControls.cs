@@ -42,7 +42,7 @@ public class PlayerFlightControls : MonoBehaviour
 		}
 
         // jet mode
-        if (InputManager.GetButtonDown(InputAxis.Transform))
+        if (InputManager.GetButtonDown(InputMapping.Transform))
         {
             _isJetMode = !_isJetMode;
             _throttle = 1;
@@ -65,16 +65,16 @@ public class PlayerFlightControls : MonoBehaviour
             _throttle = Mathf.Clamp(thrustNeeded / _enginePower, 0, 1);
         }
 
-        var throt = InputManager.GetAxis(InputAxis.Throttle);
+        var throt = InputManager.GetAxis(InputMapping.Throttle);
         if (_isJetMode)
             _throttle += throt * Time.deltaTime;
         else
             _throttle += throt;
         _throttle = Mathf.Clamp(_throttle, 0, 1);
 
-        _pitchControl = InputManager.GetAxis(InputAxis.Pitch);
-        _yawControl = InputManager.GetAxis(InputAxis.Yaw);
-        _rollControl = InputManager.GetAxis(InputAxis.Roll);
+        _pitchControl = InputManager.GetAxis(InputMapping.Pitch);
+        _yawControl = InputManager.GetAxis(InputMapping.Yaw);
+        _rollControl = InputManager.GetAxis(InputMapping.Roll);
 
         // aim MG
         var mg = GetComponent<MachineGun>();
@@ -149,7 +149,10 @@ public class PlayerFlightControls : MonoBehaviour
         GUI.TextArea(new Rect(20, 110, 100, 20), "Jets: " + mode, Utility.BasicGuiStyle);
 
         // gunsight
-	    var rect = Utility.GetCenteredRectangle(new Vector2(Screen.width / 2f, Screen.height / 2f), 32, 32);
-        GUI.DrawTexture(rect, GunsightTexture);
+	    if (GameBrain.CurrentView == GameView.Internal)
+	    {
+	        var rect = Utility.GetCenteredRectangle(new Vector2(Screen.width / 2f, Screen.height / 2f), 32, 32);
+	        GUI.DrawTexture(rect, GunsightTexture);
+	    }
 	}
 }

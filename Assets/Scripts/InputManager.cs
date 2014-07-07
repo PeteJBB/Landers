@@ -7,65 +7,8 @@ using System.Collections;
 
 public class InputManager
 {
-    public static InputMapping[] inputDictionary = GetDefaultMappings();
-
-    private static InputMapping[] GetDefaultMappings()
+    public static float GetAxis(InputMapping map)
     {
-        var arr = new InputMapping[Enum.GetValues(typeof (InputAxis)).Length];
-
-        arr[(int)InputAxis.Pitch] = new InputMapping()
-        {
-            JoystickAxis = "5",
-            PositiveKey = KeyCode.UpArrow,
-            NegativeKey = KeyCode.DownArrow,
-            InvertJoystick = true,
-        };
-
-        arr[(int) InputAxis.Yaw] = new InputMapping()
-        {
-            JoystickAxis = "X",
-            PositiveKey = KeyCode.D,
-            NegativeKey = KeyCode.A,
-        };
-
-        arr[(int) InputAxis.Roll] = new InputMapping()
-        {
-            JoystickAxis = "4",
-            PositiveKey = KeyCode.LeftArrow,
-            NegativeKey = KeyCode.RightArrow,
-            InvertJoystick = true,
-        };
-
-        arr[(int) InputAxis.Throttle] = new InputMapping()
-        {
-            JoystickAxis = "Y",
-            PositiveKey = KeyCode.W,
-            NegativeKey = KeyCode.S,
-            InvertJoystick = true,
-        };
-
-        arr[(int) InputAxis.Fire] = new InputMapping()
-        {
-            JoystickAxis = "3",
-            InvertJoystick = true,
-            PositiveKey = KeyCode.Space
-        };
-
-        arr[(int)InputAxis.Transform] = new InputMapping()
-        {
-            JoystickButton = 2,
-            PositiveKey = KeyCode.Return
-        };
-
-        return arr;
-    }
-
-    public static float GetAxis(InputAxis axis)
-    {
-        var map = inputDictionary[(int)axis];
-        if (map == null)
-            return 0;
-
         if (map.PositiveKey != null && Input.GetKey(map.PositiveKey.Value))
         {
             return 1;
@@ -86,12 +29,8 @@ public class InputManager
         return 0;
     }
 
-    public static bool GetButtonDown(InputAxis axis)
+    public static bool GetButtonDown(InputMapping map)
     {
-        var map = inputDictionary[(int)axis];
-        if (map == null)
-            return false;
-
         if (map.JoystickButton != null && Input.GetKeyDown("joystick 1 button " + map.JoystickButton))
             return true;
 
@@ -110,12 +49,8 @@ public class InputManager
         return false;
     }
 
-    public static bool GetButton(InputAxis axis)
+    public static bool GetButton(InputMapping map)
     {
-        var map = inputDictionary[(int)axis];
-        if (map == null)
-            return false;
-
         if (map.JoystickButton != null && Input.GetKey("joystick 1 button " + map.JoystickButton))
             return true;
 
@@ -142,14 +77,79 @@ public class InputMapping
     public bool InvertJoystick;
     public KeyCode? PositiveKey;
     public KeyCode? NegativeKey;
+
+    public static InputMapping Pitch = new InputMapping()
+    {
+        JoystickAxis = XboxAxis.RightStickY,
+        PositiveKey = KeyCode.UpArrow,
+        NegativeKey = KeyCode.DownArrow,
+        InvertJoystick = true,
+    };
+
+    public static InputMapping Yaw = new InputMapping()
+    {
+        JoystickAxis = XboxAxis.LeftStickX,
+        PositiveKey = KeyCode.D,
+        NegativeKey = KeyCode.A,
+    };
+
+    public static InputMapping Roll = new InputMapping()
+    {
+        JoystickAxis = XboxAxis.RightStickX,
+        PositiveKey = KeyCode.LeftArrow,
+        NegativeKey = KeyCode.RightArrow,
+        InvertJoystick = true,
+    };
+
+    public static InputMapping Throttle = new InputMapping()
+    {
+        JoystickAxis = XboxAxis.LeftStickY,
+        PositiveKey = KeyCode.W,
+        NegativeKey = KeyCode.S,
+        InvertJoystick = true,
+    };
+
+    public static InputMapping Fire = new InputMapping()
+    {
+        JoystickAxis = XboxAxis.Triggers,
+        InvertJoystick = true,
+        PositiveKey = KeyCode.Space
+    };
+
+    public static InputMapping Transform = new InputMapping()
+    {
+        JoystickButton = XboxButtons.X,
+        PositiveKey = KeyCode.Return
+    };
+
+    public static InputMapping Map = new InputMapping()
+    {
+        JoystickButton = XboxButtons.Back,
+        PositiveKey = KeyCode.M
+    };
 }
 
-public enum InputAxis
+public class XboxButtons
 {
-    Pitch = 0,
-    Yaw = 1,
-    Roll = 2,
-    Throttle = 3,
-    Fire = 4,
-    Transform = 5
+    public const int A = 0;
+    public const int B = 1;
+    public const int X = 2; 
+    public const int Y = 3;
+    public const int LeftBumper = 4;
+    public const int RightBumper = 5;
+    public const int Back = 6;
+    public const int Start = 7;
+    public const int LeftStick = 8;
+    public const int RightStick = 9;
+}
+
+public class XboxAxis
+{
+    public const string LeftStickX = "X";
+    public const string LeftStickY = "Y";
+    public const string Triggers = "3";
+    public const string RightStickX = "4";
+    public const string RightStickY = "5";
+    public const string DPadX = "6";
+    public const string DPadY = "7";
 }

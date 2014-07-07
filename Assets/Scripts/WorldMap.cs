@@ -21,9 +21,12 @@ public class WorldMap : MonoBehaviour
 
 	void Update () 
 	{
-	    if (Input.GetKeyDown(KeyCode.M))
+	    if (InputManager.GetButtonDown(InputMapping.Map))
 	    {
 	        _isFullScreen = !_isFullScreen;
+            GameBrain.CurrentView = _isFullScreen 
+                ? GameView.Map 
+                : GameView.Internal;
 	    }
 
 	    if (_isFullScreen)
