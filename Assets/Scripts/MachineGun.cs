@@ -6,11 +6,14 @@ public class MachineGun : MonoBehaviour
 {
     public GameObject BulletPrefab;
     public Quaternion AimRotation;
+    public float Ammo = 200;
+    public float MaxAmmo = 200;
 
-    private float _fireDelay = 0.06f;
+    private const float _fireDelay = 0.06f;
     private float _lastFireTime = 0;
     private bool _isNextBulletOnLeft = false;
-
+    
+    
     void Start()
     {
         
@@ -20,25 +23,33 @@ public class MachineGun : MonoBehaviour
     {
         if (InputManager.GetButton(InputMapping.Fire) && Time.fixedTime - _lastFireTime > _fireDelay)
         {
-            //Screen.lockCursor = true;
-            //Screen.showCursor = false;
             Fire();
         }
     }
 
     private void Fire()
     {
-        var pos = transform.position + transform.forward - transform.up;
-        pos += _isNextBulletOnLeft ? -transform.right : transform.right;
-        
-        var b = (GameObject)Instantiate(BulletPrefab, pos, AimRotation);
-        b.rigidbody.velocity = rigidbody.velocity;
-        b.rigidbody.AddForce(b.transform.forward * 400);
+        if (Ammo > 0)
+        {
+            var pos = transform.position + transform.forward - transform.up;
+            pos += _isNextBulletOnLeft ? -transform.right : transform.right;
 
-        var projectile = b.GetComponent<Projectile>();
-        projectile.Team = 1;
+            var b = (GameObject) Instantiate(BulletPrefab, pos, AimRotation);
+            b.rigidbody.velocity = rigidbody.velocity;
+            b.rigidbody.AddForce(b.transform.forward * 400);
+
+            var projectile = b.GetComponent<Projectile>();
+            projectile.Team = 1;
+
+            Ammo--;
+        }
 
         _isNextBulletOnLeft = !_isNextBulletOnLeft;
         _lastFireTime = Time.fixedTime;
+    }
+
+    private void OnGUI()
+    {
+        GUI.TextArea(new Rect(120, 80, 100, 20), "Ammo: " + Ammo, Utility.BasicGuiStyle);
     }
 }

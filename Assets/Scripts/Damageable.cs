@@ -32,7 +32,7 @@ public class Damageable : MonoBehaviour
 
     void OnGUI()
     {
-        if (GameBrain.CurrentView == GameView.Internal)
+        if (GameBrain.CurrentView == GameView.Internal && Team == 1)
         {
             var dist = Vector3.Distance(Camera.main.transform.position, transform.position);
             if (dist < 200)
