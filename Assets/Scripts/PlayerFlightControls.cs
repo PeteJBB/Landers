@@ -76,9 +76,12 @@ public class PlayerFlightControls : MonoBehaviour
         _yawControl = InputManager.GetAxis(InputMapping.Yaw);
         _rollControl = InputManager.GetAxis(InputMapping.Roll);
 
-        // aim MG
-        var mg = GetComponent<MachineGun>();
-        mg.AimRotation = Quaternion.LookRotation(transform.forward, Vector3.up);
+        // MG
+        if (InputManager.GetButton(InputMapping.Fire))
+        {
+            var mg = GetComponent<MachineGun>();
+            mg.Fire();
+        }
 	}
 
     private void UpdatePhysics()

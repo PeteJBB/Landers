@@ -12,6 +12,7 @@ GameObject:
   - 114: {fileID: 11400004}
   - 114: {fileID: 11400006}
   - 114: {fileID: 11400000}
+  - 114: {fileID: 11400002}
   m_Layer: 10
   m_Name: Bullet
   m_TagString: Untagged
@@ -175,6 +176,18 @@ MonoBehaviour:
   ExplosionPrefab: {fileID: 100004, guid: 6052659339a9dad40b32e8829ae50d14, type: 2}
   ExplosionRadius: 5
   ExplosionDamage: 5
+  Team: 1
+--- !u!114 &11400002
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100000}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 882d1d271209094478c18bcb4944d4d0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
   Team: 1
 --- !u!114 &11400004
 MonoBehaviour:

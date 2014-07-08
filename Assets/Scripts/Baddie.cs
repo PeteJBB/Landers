@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Threading;
 using UnityEngine;
 using System.Collections;
 using Random = UnityEngine.Random;
@@ -21,12 +22,22 @@ public class Baddie : MonoBehaviour
     private BaddieState _state;
     private GameObject _target;
 
+    private int _visibilityTestLayerMask;
     
+    private Transform _turret;
+    private const float _turretSpeed = 45f;
+    private MachineGun _machineGun;
+
     void Start()
     {
         _state = BaddieState.Idle;
         _agent = GetComponent<NavMeshAgent>();
         _beam = GetComponent<LineRenderer>();
+
+        _turret = transform.FindChild("Turret");
+        _machineGun = _turret.GetComponent<MachineGun>();
+
+        _visibilityTestLayerMask = LayerMask.GetMask(new[] { "Terrain", "Buildings" });
     }
 
     void Update()
@@ -34,6 +45,18 @@ public class Baddie : MonoBehaviour
         _terrain = Utility.GetTerrainByWorldPos(transform.position);
         if (_terrain == null)
             return;
+
+        var threat = GetNearestThreat();
+        if (threat != null)
+        {
+            _target = threat;
+            _beam.enabled = false;
+            _state = BaddieState.Defending;
+        }
+        else if (_state == BaddieState.Defending)
+        {
+            _state = BaddieState.Idle;
+        }
 
         if (_state == BaddieState.Idle)
         {
@@ -61,6 +84,7 @@ public class Baddie : MonoBehaviour
         }
         else if (_state == BaddieState.Wandering)
         {
+            TurnTurretTowards(_turret.position + transform.forward);
             if (Vector3.Distance(transform.position, _agent.destination) < 1)
             {
                 // arrived!
@@ -77,6 +101,9 @@ public class Baddie : MonoBehaviour
                 _idleStartTime = Time.fixedTime;
                 return;
             }
+
+            // look at target
+            TurnTurretTowards(_target.transform.position);
 
             var distToTarget = Vector3.Distance(transform.position, _target.transform.position);
             if (distToTarget < _attackRange)
@@ -97,9 +124,14 @@ public class Baddie : MonoBehaviour
                 return;
             }
 
+            // look at target
+            TurnTurretTowards(_target.transform.position);
+
             if (!_beam.enabled)
             {
-                if (Time.fixedTime - _lastAttackTime > _attackDelay + _beamTime)
+                var angle = Vector3.Angle(_turret.forward, _target.transform.position - _turret.position);
+            
+                if (angle < 10 && Time.fixedTime - _lastAttackTime > _attackDelay + _beamTime)
                 {
                     // turn beam on
                     _beam.useWorldSpace = true;
@@ -132,7 +164,7 @@ public class Baddie : MonoBehaviour
                 else
                 {
                     // update beam pos
-                    var start = transform.position + (Vector3.up * 1.3f);
+                    var start = _turret.position;
                     var end = _target.transform.position;
                     end.y = start.y;
                     _beam.SetPosition(0, start);
@@ -140,11 +172,37 @@ public class Baddie : MonoBehaviour
                 }
             }
         }
+        else if (_state == BaddieState.Defending)
+        {
+            // i.e shoot at player
+            TurnTurretTowards(_target.transform.position);
+            var angle = Vector3.Angle(_turret.forward, _target.transform.position - _turret.position);
+            if(angle < 10)
+            {
+                _turret.GetComponent<MachineGun>().Fire();
+            }
+        }
     }
 
-    private void Fire()
+    private void TurnTurretTowards(Vector3 targetPos)
     {
-        _beam.enabled = true;
+        _turret.rotation = Quaternion.RotateTowards(_turret.rotation, Quaternion.LookRotation(targetPos - _turret.position, Vector3.up), Time.deltaTime * _turretSpeed);
+    }
+
+    private GameObject GetNearestThreat()
+    {
+        var threat = GameObject.FindGameObjectWithTag("Player");
+        var dist = Vector3.Distance(transform.position, threat.transform.position);
+        if (dist < 100)
+        {
+            
+            if (!Physics.Linecast(_turret.position, threat.transform.position, _visibilityTestLayerMask))
+            {
+                // nothing blocking my view
+                return threat;
+            }
+        }
+        return null;
     }
 
     private GameObject GetNearestTarget()
@@ -160,7 +218,7 @@ public class Baddie : MonoBehaviour
         // find the closest one
         GameObject closest = null;
         float dist = 0;
-        for (var i = 1; i < targets.Length; i++)
+        for (var i = 0; i < targets.Length; i++)
         {
             var t = targets[i];
             if(!searchArea.Contains(new Vector2(t.transform.position.x, t.transform.position.z)))

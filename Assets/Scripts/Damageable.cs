@@ -6,11 +6,6 @@ public class Damageable : MonoBehaviour
     public float MaxHealth;
     public GameObject ExplosionPrefab;
 
-    /// <summary>
-    /// Team 0 means anyone can damage me, otherwise only take damage from other teams
-    /// </summary>
-    public int Team;
-
     private float _health;
     private void Start()
     {
@@ -32,7 +27,7 @@ public class Damageable : MonoBehaviour
 
     void OnGUI()
     {
-        if (GameBrain.CurrentView == GameView.Internal && Team == 1)
+        if (GameBrain.CurrentView == GameView.Internal && gameObject.GetTeam() == 1)
         {
             var dist = Vector3.Distance(Camera.main.transform.position, transform.position);
             if (dist < 200)

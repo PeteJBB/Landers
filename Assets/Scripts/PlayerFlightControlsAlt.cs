@@ -142,7 +142,7 @@ public class PlayerFlightControlsAlt : MonoBehaviour
         var center = new Vector2(Screen.width / 2f, Screen.height / 2f);
         var ray = Camera.main.ScreenPointToRay(center + (new Vector2(_aimPoint.x * 128, _aimPoint.y * -128)));
         var mg = GetComponent<MachineGun>();
-        mg.AimRotation = Quaternion.LookRotation(ray.direction, Vector3.up);
+        //mg.AimRotation = Quaternion.LookRotation(ray.direction, Vector3.up);
         
     }
 
