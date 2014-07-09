@@ -6,17 +6,14 @@ using UnityEngine;
 using System.Collections;
 using Random = UnityEngine.Random;
 
-public class Baddie : MonoBehaviour
+public class Baddie_MG : MonoBehaviour
 {
-    private const float _attackRange = 20;
-    private const float _attackDelay = 4; // time between attacks
-    private const float _beamTime = 2; // time beam is on during attack
+    private const float _evasiveMoveDistance = 10;
     private const float _idleWaitTime = 3; // when idle, wait this long before looking for something to do
 
     private float _lastAttackTime;
     private float _idleStartTime;
     
-    private LineRenderer _beam;
     private NavMeshAgent _agent;
     private Terrain _terrain;
     private BaddieState _state;
@@ -32,7 +29,6 @@ public class Baddie : MonoBehaviour
     {
         _state = BaddieState.Idle;
         _agent = GetComponent<NavMeshAgent>();
-        _beam = GetComponent<LineRenderer>();
 
         _turret = transform.FindChild("Turret");
         _machineGun = _turret.GetComponent<MachineGun>();
@@ -46,40 +42,29 @@ public class Baddie : MonoBehaviour
         if (_terrain == null)
             return;
 
-        //var threat = GetNearestThreat();
-        //if (threat != null)
-        //{
-        //    _target = threat;
-        //    _beam.enabled = false;
-        //    _state = BaddieState.Defending;
-        //}
-        //else if (_state == BaddieState.Defending)
-        //{
-        //    // threat has passed
-        //    _state = BaddieState.Idle;
-        //}
+        var threat = GetNearestThreat();
+        if (threat != null)
+        {
+            _target = threat;
+            _state = BaddieState.Defending;
+        }
+        else if (_state == BaddieState.Defending)
+        {
+            // threat has passed
+            _state = BaddieState.Idle;
+        }
 
         if (_state == BaddieState.Idle)
         {
             if (Time.fixedTime - _idleStartTime > _idleWaitTime)
             {
-                // look for something to do
-                _target = GetNearestTarget();
-                if (_target != null)
+                // just pick a random point and go there
+                var dest = GetRandomDestination();
+                var path = new NavMeshPath();
+                if (_agent.CalculatePath(dest, path))
                 {
-                    _agent.SetDestination(_target.transform.position);
-                    _state = BaddieState.MovingToTarget;
-                }
-                else
-                {
-                    // just pick a random point and go there
-                    var dest = GetRandomDestination();
-                    var path = new NavMeshPath();
-                    if (_agent.CalculatePath(dest, path))
-                    {
-                        _agent.SetDestination(dest);
-                        _state = BaddieState.Wandering;
-                    }
+                    _agent.SetDestination(dest);
+                    _state = BaddieState.Wandering;
                 }
             }
         }
@@ -93,93 +78,19 @@ public class Baddie : MonoBehaviour
                 _idleStartTime = Time.fixedTime;
             }
         }
-        else if (_state == BaddieState.MovingToTarget)
-        {
-            if (_target == null)
-            {
-                // no target set or target destroyed
-                _state = BaddieState.Idle;
-                _idleStartTime = Time.fixedTime;
-                return;
-            }
-
-            // look at target
-            TurnTurretTowards(_target.transform.position);
-
-            var distToTarget = Vector3.Distance(transform.position, _target.transform.position);
-            if (distToTarget < _attackRange)
-            {
-                // in range, attack
-                _agent.SetDestination(transform.position);
-                _state = BaddieState.Attacking;
-            }
-        }
-        else if (_state == BaddieState.Attacking)
-        {
-            if (_target == null)
-            {
-                // no target set or target destroyed
-                _state = BaddieState.Idle;
-                _idleStartTime = Time.fixedTime;
-                _beam.enabled = false;
-                return;
-            }
-
-            // look at target
-            TurnTurretTowards(_target.transform.position);
-
-            if (!_beam.enabled)
-            {
-                var angle = Vector3.Angle(_turret.forward, _target.transform.position - _turret.position);
-            
-                if (angle < 10 && Time.fixedTime - _lastAttackTime > _attackDelay + _beamTime)
-                {
-                    // turn beam on
-                    _beam.useWorldSpace = true;
-                    var start = transform.position + (Vector3.up * 1.3f);
-                    var end = _target.transform.position;
-                    end.y = start.y;
-                    _beam.SetPosition(0, start);
-                    _beam.SetPosition(1, end);
-                    _beam.enabled = true;
-                    _lastAttackTime = Time.fixedTime;
-                }
-            }
-            else
-            {
-                if (Time.fixedTime > _lastAttackTime + _beamTime)
-                {
-                    // turn beam off and apply damage
-                    _beam.enabled = false;
-                    _target.GetComponent<Damageable>().ApplyDamage(50);
-
-                    // move
-                    var dest = GetRandomDestination(_target.transform.position, _attackRange);
-                    _agent.SetDestination(dest);
-                }
-                else
-                {
-                    // update beam pos
-                    var start = _turret.position;
-                    var end = _target.transform.position;
-                    end.y = start.y;
-                    _beam.SetPosition(0, start);
-                    _beam.SetPosition(1, end);
-                }
-            }
-        }
         else if (_state == BaddieState.Defending)
         {
             // move around
             if (Vector3.Distance(transform.position, _agent.destination) < 0.1f)
             {
-                var dest = GetRandomDestination(transform.position, _attackRange);
+                var dest = GetRandomDestination(transform.position, _evasiveMoveDistance);
                 _agent.SetDestination(dest);
             }
 
             // shoot at player
-            TurnTurretTowards(_target.transform.position);
-            var angle = Vector3.Angle(_turret.forward, _target.transform.position - _turret.position);
+            var aimPoint = ComputLeadPoint(_target);
+            TurnTurretTowards(aimPoint);
+            var angle = Vector3.Angle(_turret.forward, aimPoint - _turret.position);
             if(angle < 10)
             {
                 _machineGun.Fire();
@@ -190,6 +101,16 @@ public class Baddie : MonoBehaviour
     private void TurnTurretTowards(Vector3 targetPos)
     {
         _turret.rotation = Quaternion.RotateTowards(_turret.rotation, Quaternion.LookRotation(targetPos - _turret.position, Vector3.up), Time.deltaTime * _turretSpeed);
+    }
+
+    private Vector3 ComputLeadPoint(GameObject obj)
+    {
+        var dist = Vector3.Distance(_turret.position, obj.transform.position);
+        var velocity = 400;
+        var bulletTimeToTarget = velocity / dist * Time.fixedDeltaTime;
+        var leadPoint = obj.transform.position + (obj.rigidbody.velocity * bulletTimeToTarget);
+
+        return leadPoint;
     }
 
     private GameObject GetNearestThreat()

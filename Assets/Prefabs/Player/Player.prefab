@@ -15,6 +15,7 @@ GameObject:
   - 114: {fileID: 11400002}
   - 114: {fileID: 11400004}
   - 114: {fileID: 11400008}
+  - 114: {fileID: 11400006}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -47,8 +48,8 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100000}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1719.12781, y: 7.82132912, z: -37.8197479}
+  m_LocalRotation: {x: 0, y: .412397623, z: 0, w: .911004007}
+  m_LocalPosition: {x: -1675.75208, y: .829999983, z: -8.93242264}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 400002}
@@ -61,7 +62,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100002}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: .174545288, z: 1.04475403}
+  m_LocalPosition: {x: 9.87598924e-06, y: .887899339, z: 1.04476488}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 400000}
@@ -124,7 +125,7 @@ BoxCollider:
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 1, y: .699999988, z: 3}
-  m_Center: {x: 0, y: .150000006, z: 0}
+  m_Center: {x: 0, y: .699999988, z: 0}
 --- !u!65 &6500002
 BoxCollider:
   m_ObjectHideFlags: 1
@@ -136,7 +137,7 @@ BoxCollider:
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 1, y: .300000012, z: 2}
-  m_Center: {x: 0, y: -.349999994, z: .200000003}
+  m_Center: {x: 0, y: .200000003, z: .200000003}
 --- !u!81 &8100000
 AudioListener:
   m_ObjectHideFlags: 1
@@ -187,12 +188,28 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   BulletPrefab: {fileID: 100000, guid: b52e71edfecccec42bcdb30ec55626e3, type: 2}
-  AimRotation: {x: 0, y: 0, z: 0, w: 0}
-  Ammo: 200
-  MaxAmmo: 200
+  Ammo: 500
+  MaxAmmo: 500
+  Innaccuracy: .5
+  FireDelay: .0599999987
   Offsets:
-  - {x: .75, y: -.330000013, z: .5}
-  - {x: -.75, y: -.330000013, z: .5}
+  - {x: .75, y: .439999998, z: .5}
+  - {x: -.75, y: .439999998, z: .5}
+--- !u!114 &11400006
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100000}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 867eab02cb5387044b45e867ae6d961d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Health: 100
+  MaxHealth: 100
+  ExplosionPrefab: {fileID: 100006, guid: e4c8967fa024a574fb768483889f674b, type: 2}
+  DontDestroy: 1
 --- !u!114 &11400008
 MonoBehaviour:
   m_ObjectHideFlags: 1

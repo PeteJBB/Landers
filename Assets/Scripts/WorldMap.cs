@@ -35,6 +35,9 @@ public class WorldMap : MonoBehaviour
 	        camera.aspect = (float)Screen.width / Screen.height;
 	        camera.orthographicSize = 3000;
             camera.transform.position = new Vector3(0, 500, 0);
+	        camera.depth = 0;
+	        Camera.main.depth = 1;
+            Camera.main.pixelRect = new Rect(Screen.width - Padding - MapSize, Screen.height - Padding - MapSize, MapSize, MapSize);
             
 	    }
         else
@@ -42,6 +45,10 @@ public class WorldMap : MonoBehaviour
             camera.pixelRect = new Rect(Screen.width - Padding - MapSize, Screen.height - Padding - MapSize, MapSize, MapSize);
             camera.orthographicSize = 200;
             camera.aspect = 1;
+
+            camera.depth = 1;
+            Camera.main.depth = 0;
+            Camera.main.rect = new Rect(0, 0, 1, 1);
 
             // track player
             var pos = _player.transform.position;

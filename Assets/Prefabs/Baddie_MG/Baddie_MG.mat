@@ -6,7 +6,7 @@ Material:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: Baddie
+  m_Name: Baddie_MG
   m_Shader: {fileID: 4800000, guid: 58e9f2eef180c2040ac531880fd65abe, type: 3}
   m_ShaderKeywords: []
   m_CustomRenderQueue: -1
@@ -25,7 +25,7 @@ Material:
           name: _GridAlphaTex
         second:
           m_Texture: {fileID: 2800000, guid: ff75a2d87f1484c479106c086a308950, type: 3}
-          m_Scale: {x: 6, y: 4}
+          m_Scale: {x: 4, y: 4}
           m_Offset: {x: 0, y: 0}
     m_Floats: {}
     m_Colors:
@@ -40,4 +40,4 @@ Material:
       data:
         first:
           name: _MainColor
-        second: {r: .83088237, g: .83088237, b: .83088237, a: 1}
+        second: {r: 1, g: 0, b: 0, a: 1}

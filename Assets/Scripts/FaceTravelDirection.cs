@@ -5,6 +5,7 @@ public class FaceTravelDirection : MonoBehaviour
 {
     void Update()
     {
-        transform.rotation = Quaternion.LookRotation(rigidbody.velocity);
+        if(rigidbody.velocity.magnitude > 0)
+            transform.rotation = Quaternion.LookRotation(rigidbody.velocity);
     }
 }

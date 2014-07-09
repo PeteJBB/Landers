@@ -214,7 +214,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 93bd0f3d8ac9aa3478df5b367050f085, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  BaddiePrefab: {fileID: 100006, guid: 2e6f4ccf6c64a3d49823dd995f782835, type: 2}
+  Prefabs:
+  - {fileID: 100006, guid: 2e6f4ccf6c64a3d49823dd995f782835, type: 2}
+  - {fileID: 100006, guid: 32aed7baa34130f4a92fd5ef79fa8eb0, type: 2}
+  SpawnWeighting: 0200000001000000
 --- !u!114 &11400004
 MonoBehaviour:
   m_ObjectHideFlags: 1

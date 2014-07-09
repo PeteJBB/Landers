@@ -4,10 +4,13 @@ using System.Collections;
 
 public class ResupplyArea : MonoBehaviour
 {
-    private const float _mgResupplyDelay = 0.02f;
-    private float _lastMgResupplyTime;
+    private const float _resupplyDelay = 0.1f;
+    private float _lastResupplyTime;
 
-    private readonly List<GameObject> _guysToResupply = new List<GameObject>();
+    private const float _mgResupplyRate = 25;
+    private const float _healthResupplyRate = 2;
+
+    public readonly List<GameObject> CurrentlyResupplying = new List<GameObject>();
  
     void Start()
     {
@@ -16,28 +19,31 @@ public class ResupplyArea : MonoBehaviour
 
     void Update()
     {
-        foreach (var g in _guysToResupply)
+        if (Time.fixedTime - _lastResupplyTime > _resupplyDelay)
         {
-            if (Time.fixedTime - _lastMgResupplyTime > _mgResupplyDelay)
+            foreach (var g in CurrentlyResupplying)
             {
                 var mg = g.GetComponent<MachineGun>();
                 if (mg.Ammo < mg.MaxAmmo)
-                    mg.Ammo++;
+                    mg.Ammo = (int)Mathf.Min(mg.MaxAmmo, mg.Ammo + _mgResupplyRate);
 
-                _lastMgResupplyTime = Time.fixedTime;
+                var dam = g.GetComponent<Damageable>();
+                dam.Health = (int)Mathf.Min(dam.MaxHealth, dam.Health + _healthResupplyRate);
             }
+
+            _lastResupplyTime = Time.fixedTime;
         }
     }
 
     private void OnTriggerEnter(Collider col)
     {
-        if (col.gameObject.tag == "Player" && !_guysToResupply.Contains(col.gameObject))
-            _guysToResupply.Add(col.gameObject);
+        if (col.gameObject.tag == "Player" && !CurrentlyResupplying.Contains(col.gameObject))
+            CurrentlyResupplying.Add(col.gameObject);
     }
 
     private void OnTriggerExit(Collider col)
     {
-        if (col.gameObject.tag == "Player" && _guysToResupply.Contains(col.gameObject))
-            _guysToResupply.Remove(col.gameObject);
+        if (col.gameObject.tag == "Player" && CurrentlyResupplying.Contains(col.gameObject))
+            CurrentlyResupplying.Remove(col.gameObject);
     }
 }

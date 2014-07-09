@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Runtime.InteropServices;
 using UnityEngine;
 using System.Collections;
@@ -54,7 +55,7 @@ public class PlayerFlightControls : MonoBehaviour
 
     void UpdateFlightControls()
 	{
-        if (!_isJetMode)
+        if (!_isJetMode && !IsLandedOnHelipad())
         {
             // calculate hover throttle
             var thrustAngle = Mathf.Deg2Rad * Vector3.Angle(Physics.gravity, -transform.up);
@@ -151,6 +152,9 @@ public class PlayerFlightControls : MonoBehaviour
 	    var mode = _isJetMode ? "On" : "Off";
         GUI.TextArea(new Rect(20, 110, 100, 20), "Jets: " + mode, Utility.BasicGuiStyle);
 
+        GUI.TextArea(new Rect(120, 50, 100, 20), "Health: " + GetComponent<Damageable>().Health, Utility.BasicGuiStyle);
+        GUI.TextArea(new Rect(120, 80, 100, 20), "Ammo: " + GetComponent<MachineGun>().Ammo, Utility.BasicGuiStyle);
+
         // gunsight
 	    if (GameBrain.CurrentView == GameView.Internal)
 	    {
@@ -158,4 +162,15 @@ public class PlayerFlightControls : MonoBehaviour
 	        GUI.DrawTexture(rect, GunsightTexture);
 	    }
 	}
+
+    private bool IsLandedOnHelipad()
+    {
+        var pads = FindObjectsOfType<ResupplyArea>();
+        foreach (var p in pads)
+        {
+            if (p.CurrentlyResupplying.Contains(gameObject))
+                return true;
+        }
+        return false;
+    }
 }

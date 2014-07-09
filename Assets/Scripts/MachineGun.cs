@@ -7,6 +7,7 @@ public class MachineGun : MonoBehaviour
     public GameObject BulletPrefab;
     public int Ammo = 200;
     public int MaxAmmo = 200;
+    public float Innaccuracy = 0;
 
     public float FireDelay = 0.06f;
     private float _lastFireTime = 0;
@@ -23,7 +24,14 @@ public class MachineGun : MonoBehaviour
                 var offset = Offsets[_offsetIndex];
                 var pos = transform.TransformPoint(offset);
 
-                var b = (GameObject) Instantiate(BulletPrefab, pos, transform.rotation);
+                var inaccuracyAdjustment = Quaternion.Euler(
+                    Random.Range(-Innaccuracy, Innaccuracy),
+                    Random.Range(-Innaccuracy, Innaccuracy), 
+                    Random.Range(-Innaccuracy, Innaccuracy));
+                var dir = inaccuracyAdjustment * transform.forward;
+                var rotation = Quaternion.LookRotation(dir);
+
+                var b = (GameObject)Instantiate(BulletPrefab, pos, rotation);
                 b.rigidbody.velocity = rigidbody != null ? rigidbody.velocity : Vector3.zero;
                 b.rigidbody.AddForce(b.transform.forward * 400);
 
@@ -37,11 +45,6 @@ public class MachineGun : MonoBehaviour
 
             _lastFireTime = Time.fixedTime;
         }
-    }
-
-    private void OnGUI()
-    {
-        GUI.TextArea(new Rect(120, 80, 100, 20), "Ammo: " + Ammo, Utility.BasicGuiStyle);
     }
 
     private void OnDrawGizmos()

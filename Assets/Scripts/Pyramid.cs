@@ -8,7 +8,7 @@ public class Pyramid : MonoBehaviour
     private Transform _structure;
     
     private float _birthday;
-    private const float _buildTime = 10;
+    private const float _buildTime = 15;
 
     //private float _paintDelay = 1;
     //private float _lastPaintTime = 0;
