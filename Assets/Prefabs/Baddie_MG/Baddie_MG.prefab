@@ -276,6 +276,7 @@ MonoBehaviour:
   Health: 15
   MaxHealth: 15
   ExplosionPrefab: {fileID: 100006, guid: e4c8967fa024a574fb768483889f674b, type: 2}
+  DontDestroy: 0
 --- !u!114 &11400004
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -317,7 +318,7 @@ NavMeshAgent:
   m_AutoRepath: 1
   m_Height: 2
   m_BaseOffset: 0
-  m_WalkableMask: 4294967295
+  m_WalkableMask: 1
   m_ObstacleAvoidanceType: 2
 --- !u!1001 &100100000
 Prefab:

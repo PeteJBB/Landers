@@ -264,4 +264,13 @@ public class Utility
         }
         return null;
     }
+
+    public static float GetTerrainHeight(Vector3 position)
+    {
+        var t = GetTerrainByWorldPos(position);
+        if (t == null)
+            return 0;
+
+        return t.SampleHeight(position) + t.transform.position.y;
+    }
 }
