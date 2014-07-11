@@ -6,8 +6,9 @@ public class Damageable : MonoBehaviour
     public float Health;
     public float MaxHealth;
     public GameObject ExplosionPrefab;
+    public GameObject DamageEffectPrefab;
     public bool DontDestroy;
-
+    
     private void Start()
     {
        
@@ -16,6 +17,12 @@ public class Damageable : MonoBehaviour
     public void ApplyDamage(float amount)
     {
         Health -= amount;
+
+        if (DamageEffectPrefab != null)
+        {
+            Instantiate(ExplosionPrefab, transform.position, transform.rotation);
+        }
+
         if (Health < 0)
         {
             if (ExplosionPrefab != null)
@@ -26,6 +33,7 @@ public class Damageable : MonoBehaviour
             if(!DontDestroy)
                 Destroy(gameObject);
         }
+        
     }
 
     void OnGUI()

@@ -6,6 +6,8 @@ public class LandingSite : MonoBehaviour
     public Vector3 ApproachVector;
     public Vector3 ExitVector;
 
+    public bool IsEngaged;
+
     void OnDrawGizmos()
     {
         Gizmos.color = new Color(1, 1, 1, 0.1f);

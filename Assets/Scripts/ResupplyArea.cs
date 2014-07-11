@@ -7,8 +7,8 @@ public class ResupplyArea : MonoBehaviour
     private const float _resupplyDelay = 0.1f;
     private float _lastResupplyTime;
 
-    private const float _mgResupplyRate = 25;
-    private const float _healthResupplyRate = 2;
+    private const float _mgResupplyRate = 15;
+    private const float _healthResupplyRate = 5;
 
     public readonly List<GameObject> CurrentlyResupplying = new List<GameObject>();
  

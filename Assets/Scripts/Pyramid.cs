@@ -10,16 +10,15 @@ public class Pyramid : MonoBehaviour
     private float _birthday;
     private const float _buildTime = 15;
 
-    //private float _paintDelay = 1;
-    //private float _lastPaintTime = 0;
-    //private int _nextPaintSize = 3;
-
-    
+    private const float _baddieSpawnTime = 10;
+    private float _nextSpawnTime;
+    public LandingSite LandingSite;
 
     void Start()
     {
         _structure = transform.FindChild("structure");
         _birthday = Time.fixedTime;
+        _nextSpawnTime = Time.fixedTime + _baddieSpawnTime;
     }
 
     void Update()
@@ -34,33 +33,15 @@ public class Pyramid : MonoBehaviour
             _structure.localPosition = pos;
         }
 
-        //if(Time.fixedTime - _lastPaintTime > _paintDelay)
-        //{
-        //    PaintTerrain();
-        //    _nextPaintSize += 2;
-        //    _lastPaintTime = Time.fixedTime;
-        //}
-
+        if (Time.fixedTime > _nextSpawnTime)
+        {
+            GetComponent<BaddieFactory>().SpawnBaddie(transform.position);
+            _nextSpawnTime = Time.fixedTime + _baddieSpawnTime;
+        }
     }
 
-    //private void PaintTerrain()
-    //{
-    //    // paint terrain
-    //    var terrain = Terrain.activeTerrain;
-    //    var alphaCoords = Utility.GetAlphaMapCoords(transform.position, terrain);
-
-    //    var mapX = (int)Mathf.Round(alphaCoords.x - (_nextPaintSize / 2f));
-    //    var mapY = (int)Mathf.Round(alphaCoords.y - (_nextPaintSize / 2f));
-
-    //    var data = terrain.terrainData.GetAlphamaps(mapX, mapY, _nextPaintSize, _nextPaintSize);
-    //    for (var x = 0; x < _nextPaintSize; x++)
-    //    {
-    //        for (var y = 0; y < _nextPaintSize; y++)
-    //        {
-    //            data[x, y, 0] = 0;
-    //            data[x, y, 1] = 1;
-    //        }
-    //    }
-    //    terrain.terrainData.SetAlphamaps(mapX, mapY, data);
-    //}
+    private void OnDestroy()
+    {
+        LandingSite.IsEngaged = false;
+    }
 }

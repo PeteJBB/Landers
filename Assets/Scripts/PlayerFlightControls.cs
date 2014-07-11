@@ -152,7 +152,9 @@ public class PlayerFlightControls : MonoBehaviour
 	    var mode = _isJetMode ? "On" : "Off";
         GUI.TextArea(new Rect(20, 110, 100, 20), "Jets: " + mode, Utility.BasicGuiStyle);
 
-        GUI.TextArea(new Rect(120, 50, 100, 20), "Health: " + GetComponent<Damageable>().Health, Utility.BasicGuiStyle);
+	    var damage = GetComponent<Damageable>();
+	    var health = damage.Health / damage.MaxHealth * 100;
+        GUI.TextArea(new Rect(120, 50, 100, 20), "Health: " + health.ToString("0"), Utility.BasicGuiStyle);
         GUI.TextArea(new Rect(120, 80, 100, 20), "Ammo: " + GetComponent<MachineGun>().Ammo, Utility.BasicGuiStyle);
 
         // gunsight
@@ -160,6 +162,25 @@ public class PlayerFlightControls : MonoBehaviour
 	    {
 	        var rect = Utility.GetCenteredRectangle(new Vector2(Screen.width / 2f, Screen.height / 2f), 32, 32);
 	        GUI.DrawTexture(rect, GunsightTexture);
+	    }
+
+	    if (GetComponent<Damageable>().Health <= 0)
+	    {
+	        // you're dead messsage
+	        var guiStyle = new GUIStyle()
+	        {
+	            clipping = TextClipping.Overflow,
+	            wordWrap = false,
+	            normal = new GUIStyleState()
+	            {
+	                textColor = Color.white,
+	                background = Utility.CreatePlainColorTexture(Color.black)
+	            },
+	            alignment = TextAnchor.MiddleCenter,
+	            fontSize = 30
+	        };
+	        var rext = Utility.GetCenteredRectangle(new Vector2(Screen.width / 2f, Screen.height / 2f), 320, 64);
+	        GUI.TextArea(rext, "YOU'RE DEAD, DUDE", guiStyle);
 	    }
 	}
 

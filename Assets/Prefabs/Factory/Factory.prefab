@@ -297,9 +297,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 867eab02cb5387044b45e867ae6d961d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Health: 5000
-  MaxHealth: 5000
-  ExplosionPrefab: {fileID: 100006, guid: e4c8967fa024a574fb768483889f674b, type: 2}
+  Health: 2000
+  MaxHealth: 2000
+  ExplosionPrefab: {fileID: 100004, guid: 35614ed6df22bba43870fd229bf9438f, type: 2}
+  DontDestroy: 0
 --- !u!114 &11400002
 MonoBehaviour:
   m_ObjectHideFlags: 1

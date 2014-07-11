@@ -5,8 +5,6 @@ using System.Collections;
 
 public class Dropship : MonoBehaviour
 {
-    private Vector3 _landingSite;
-
     private const float _crusingSpeed = 100;
     private const float _approachDist = 500;
     private const float _flareStartDist = 200;
@@ -23,17 +21,30 @@ public class Dropship : MonoBehaviour
     private Vector3 _destXZ;
     private DropShipState _state;
 
+    private const float _spawnDelay = 2f;
+    private float _nextSpawnTime;
+    private const int _spawnAmount = 6;
+    private int _spawnCount = 0;
+
+    public LandingSite LandingSite;
+
     void Start()
     {
         _state = DropShipState.Cruising;
         
-        _landingSite = new Vector3(-1608.959f, 0, -57.52983f);
-        _landingSite.y = Utility.GetTerrainHeight(_landingSite);
+        //_landingSite = new Vector3(-1608.959f, 0, -57.52983f);
+        //_landingSite.y = Utility.GetTerrainHeight(_landingSite);
     }
 
     void Update()
     {
-        _destXZ = _landingSite;
+        if (LandingSite == null)
+        {
+            print(Time.fixedTime + ": No landing site");
+            return;
+        }
+
+        _destXZ = LandingSite.transform.position;
         _destXZ.y = transform.position.y;
 
         switch(_state)
@@ -59,7 +70,7 @@ public class Dropship : MonoBehaviour
     private void Cruising()
     {
         // move
-        var moveDir = _landingSite - transform.position;
+        var moveDir = LandingSite.transform.position - transform.position;
         transform.position += moveDir.normalized * _crusingSpeed * Time.deltaTime;
 
         // rotation
@@ -68,7 +79,6 @@ public class Dropship : MonoBehaviour
         var dist = Vector3.Distance(transform.position, _destXZ);
         if (dist < _approachDist)
         {
-            print("Approach");
             _state = DropShipState.OnApproach;
         }
     }
@@ -103,25 +113,30 @@ public class Dropship : MonoBehaviour
             speed = Mathf.Lerp(1, _crusingSpeed, dist / _flareStartDist);
 
         // move
-        var moveDir = _landingSite - transform.position;
+        var moveDir = LandingSite.transform.position - transform.position;
         transform.position += moveDir.normalized * speed * Time.deltaTime;
 
         if (dist < speed * Time.deltaTime)
         {
-            print("Landed");
             _landTime = Time.fixedTime;
+            _nextSpawnTime = Time.fixedTime + _spawnDelay;
             _state = DropShipState.Landed;
         }
     }
 
     private void Landed()
     {
-        if (Time.fixedTime - _landTime > _timeOnGround)
+        if (_spawnCount >= _spawnAmount)
         {
-            print("Leaving");
-            _exitPoint = _landingSite + (transform.forward * -1000) + (transform.right * -500);
+            _exitPoint = LandingSite.transform.position + (transform.forward * -1000) + (transform.right * -500);
             _exitPoint.y = 1000;
             _state = DropShipState.Leaving;
+        }
+        else if (Time.fixedTime > _nextSpawnTime)
+        {
+            GetComponent<BaddieFactory>().SpawnBaddie(transform.position);
+            _spawnCount++;
+            _nextSpawnTime = Time.fixedTime + _spawnDelay;
         }
     }
 
@@ -141,7 +156,6 @@ public class Dropship : MonoBehaviour
         }
         else
         {
-            print("exit");
             // exit to space
             var moveDir = _exitPoint - transform.position;
             transform.position += moveDir.normalized * _crusingSpeed * Time.deltaTime;
@@ -152,6 +166,11 @@ public class Dropship : MonoBehaviour
         {
             Destroy(gameObject);
         }
+    }
+
+    private void OnDestroy()
+    {
+        LandingSite.IsEngaged = false;
     }
 
     private enum DropShipState

@@ -6,10 +6,6 @@ public class BaddieFactory : MonoBehaviour
 {
     public GameObject[] Prefabs;
     public int[] SpawnWeighting;
-
-    private const float SpawnTime = 10;
-
-    private float _nextSpawnTime;
     private GameObject[] _prefabPool;
 
     void Start()
@@ -26,19 +22,13 @@ public class BaddieFactory : MonoBehaviour
                 index++;
             }
         }
-
-        _nextSpawnTime = Time.fixedTime + SpawnTime;
     }
 
-    void Update()
+    public void SpawnBaddie(Vector3 position)
     {
-        if (Time.fixedTime >= _nextSpawnTime)
-        {
-            // get a random prefab to spawn
-            var i = Random.Range(0, _prefabPool.Length);
-            var prefab = _prefabPool[i];
-            var baddie = (GameObject)Instantiate(prefab, transform.position, Quaternion.identity);
-            _nextSpawnTime = Time.fixedTime + SpawnTime;
-        }
+        // get a random prefab to spawn
+        var i = Random.Range(0, _prefabPool.Length);
+        var prefab = _prefabPool[i];
+        var baddie = (GameObject)Instantiate(prefab, transform.position, Quaternion.identity);
     }
 }

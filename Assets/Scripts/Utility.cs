@@ -273,4 +273,20 @@ public class Utility
 
         return t.SampleHeight(position) + t.transform.position.y;
     }
+
+    void ResetTerrainColoring(Terrain t)
+    {
+        // reset splat maps
+        var map = new float[t.terrainData.alphamapWidth, t.terrainData.alphamapHeight, 2];
+        for (var y = 0; y < t.terrainData.alphamapHeight; y++)
+        {
+            for (var x = 0; x < t.terrainData.alphamapWidth; x++)
+            {
+                map[x, y, 0] = 1;
+                map[x, y, 1] = 0;
+            }
+        }
+
+        t.terrainData.SetAlphamaps(0, 0, map);
+    }
 }

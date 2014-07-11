@@ -14,6 +14,8 @@ public class Lander : MonoBehaviour
     public GameObject ImpactExplosion;
     public GameObject PyramidPrefab;
 
+    public LandingSite LandingSite { get; set; }
+
     void Start()
     {
         _smoke = transform.FindChild("smoke");
@@ -39,6 +41,8 @@ public class Lander : MonoBehaviour
                 var pos = transform.position;
                 pos.y = terrain.SampleHeight(pos) + terrain.transform.position.y;
                 obj.transform.position = pos;
+
+                obj.GetComponent<Pyramid>().LandingSite = LandingSite;
             }
 
             DetatchParticles();

@@ -33,12 +33,11 @@ public class WorldMap : MonoBehaviour
 	    {
 	        camera.rect = new Rect(0, 0, 1, 1);
 	        camera.aspect = (float)Screen.width / Screen.height;
-	        camera.orthographicSize = 3000;
-            camera.transform.position = new Vector3(0, 500, 0);
+	        camera.orthographicSize = 1000;
+            camera.transform.position = new Vector3(-730, 500, 0);
 	        camera.depth = 0;
 	        Camera.main.depth = 1;
             Camera.main.pixelRect = new Rect(Screen.width - Padding - MapSize, Screen.height - Padding - MapSize, MapSize, MapSize);
-            
 	    }
         else
         {

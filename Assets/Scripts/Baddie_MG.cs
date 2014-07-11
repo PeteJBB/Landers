@@ -10,7 +10,7 @@ public class Baddie_MG : MonoBehaviour
 {
     private const float _evasiveMoveDistance = 10;
     private const float _idleWaitTime = 3; // when idle, wait this long before looking for something to do
-
+    private const float _threatRange = 200;
     private float _lastAttackTime;
     private float _idleStartTime;
     
@@ -117,7 +117,7 @@ public class Baddie_MG : MonoBehaviour
     {
         var threat = GameObject.FindGameObjectWithTag("Player");
         var dist = Vector3.Distance(transform.position, threat.transform.position);
-        if (dist < 100)
+        if (dist < _threatRange)
         {
             
             if (!Physics.Linecast(_turret.position, threat.transform.position, _visibilityTestLayerMask))

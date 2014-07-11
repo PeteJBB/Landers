@@ -5,15 +5,24 @@ public class GameBrain : MonoBehaviour
 {
     public static GameView CurrentView = GameView.Internal;
 
+    private const float LanderSpawnDelay = 15;
+    
+    private int _spawnCount = 0;
+    private float _lastSpawn;
+
     void Start()
     {
-        
+        _lastSpawn = Time.fixedTime;
     }
 
-    // Update is called once per frame
+
     void Update()
     {
-
+        if (Time.fixedTime - _lastSpawn > LanderSpawnDelay)
+        {
+            GetComponent<LanderFactory>().SpawnLander();
+            _lastSpawn = Time.fixedTime;
+        }
     }
 }
 
