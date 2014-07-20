@@ -11,22 +11,46 @@ public class InputManager
     {
         if (map.PositiveKey != null && Input.GetKey(map.PositiveKey.Value))
         {
-            return 1;
+            if (map.LastUpdateTime < Time.fixedTime)
+            {
+                map.AxisValue = Mathf.Clamp(map.AxisValue + map.KeySensitivity, -1, 1);
+            }
+            return map.AxisValue;
         }
+
         if (map.NegativeKey != null && Input.GetKey(map.NegativeKey.Value))
         {
-            return -1;
+            if (map.LastUpdateTime < Time.fixedTime)
+            {
+                map.AxisValue = Mathf.Clamp(map.AxisValue - map.KeySensitivity, -1, 1);
+            }
+            return map.AxisValue;
+        }
+
+        if (map.LastUpdateTime < Time.fixedTime)
+        {
+            var val = map.AxisValue > 0
+                ? -map.KeySensitivity
+                : map.KeySensitivity;
+
+            map.AxisValue = Mathf.Clamp(map.AxisValue + val, -1, 1);
         }
 
         if (map.JoystickAxis != null)
         {
-            float val = Input.GetAxis(map.JoystickAxis);
-            return map.InvertJoystick
-                ? -val
-                : val;
+            var val = Input.GetAxis(map.JoystickAxis);
+            if (map.InvertJoystick)
+                val = -val;
+
+            //if (val > map.KeySensitivity || val < -map.KeySensitivity)
+            //    map.AxisValue = val;
+
+            return val;
         }
 
-        return 0;
+        
+
+        return map.AxisValue;
     }
 
     public static bool GetButtonDown(InputMapping map)
@@ -77,6 +101,20 @@ public class InputMapping
     public bool InvertJoystick;
     public KeyCode? PositiveKey;
     public KeyCode? NegativeKey;
+
+    private float _axisValue;
+    public float AxisValue 
+    {
+        get { return _axisValue; }
+        set 
+        { 
+            _axisValue = value;
+            LastUpdateTime = Time.fixedTime;
+        }
+    }
+
+    public float KeySensitivity = 0.2f;
+    public float LastUpdateTime;
 
     public static InputMapping Pitch = new InputMapping()
     {

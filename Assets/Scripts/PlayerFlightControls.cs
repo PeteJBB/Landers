@@ -7,6 +7,7 @@ using System.Collections;
 public class PlayerFlightControls : MonoBehaviour
 {
     public Texture GunsightTexture;
+    public Texture FlightPathTexture;
 
     private const float _pitchStrength = 40;//24;
     private const float _yawStrength = 45;//30;
@@ -157,6 +158,9 @@ public class PlayerFlightControls : MonoBehaviour
         GUI.TextArea(new Rect(120, 50, 100, 20), "Health: " + health.ToString("0"), Utility.BasicGuiStyle);
         GUI.TextArea(new Rect(120, 80, 100, 20), "Ammo: " + GetComponent<MachineGun>().Ammo, Utility.BasicGuiStyle);
 
+
+        GUI.TextArea(new Rect(120, 110, 100, 20), "Roll Axis: " + InputMapping.Roll.AxisValue, Utility.BasicGuiStyle);
+
         // gunsight
 	    if (GameBrain.CurrentView == GameView.Internal)
 	    {
@@ -167,20 +171,18 @@ public class PlayerFlightControls : MonoBehaviour
 	    if (GetComponent<Damageable>().Health <= 0)
 	    {
 	        // you're dead messsage
-	        var guiStyle = new GUIStyle()
-	        {
-	            clipping = TextClipping.Overflow,
-	            wordWrap = false,
-	            normal = new GUIStyleState()
-	            {
-	                textColor = Color.white,
-	                background = Utility.CreatePlainColorTexture(Color.black)
-	            },
-	            alignment = TextAnchor.MiddleCenter,
-	            fontSize = 30
-	        };
+	        
 	        var rext = Utility.GetCenteredRectangle(new Vector2(Screen.width / 2f, Screen.height / 2f), 320, 64);
-	        GUI.TextArea(rext, "YOU'RE DEAD, DUDE", guiStyle);
+            GUI.TextArea(rext, "YOU'RE DEAD, DUDE", Utility.BigMessageGuiStyle);
+	    }
+
+        // flight path indicator
+	    var velPoint = Camera.main.WorldToScreenPoint(transform.position + (rigidbody.velocity * 1000));
+	    if (velPoint.z > 0)
+	    {
+	        velPoint.y = Screen.height - velPoint.y;
+	        var velRect = Utility.GetCenteredRectangle(velPoint, 32, 32);
+	        GUI.DrawTexture(velRect, FlightPathTexture);
 	    }
 	}
 

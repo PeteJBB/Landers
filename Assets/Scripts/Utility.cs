@@ -24,6 +24,19 @@ public class Utility
         }
     };
 
+    public static GUIStyle BigMessageGuiStyle = new GUIStyle()
+    {
+        clipping = TextClipping.Overflow,
+        wordWrap = false,
+        normal = new GUIStyleState()
+        {
+            textColor = Color.white,
+            background = Utility.CreatePlainColorTexture(Color.black)
+        },
+        alignment = TextAnchor.MiddleCenter,
+        fontSize = 30
+    };
+
 	public static Vector2 ScreenCenter()
 	{
 		return new Vector2(Screen.width / 2f, Screen.height / 2f);
@@ -239,9 +252,12 @@ public class Utility
 		return new Vector2(mapX, mapZ);
 	}
 
-    private static readonly Dictionary<Color, Texture2D> plainTextureDictionary = new Dictionary<Color, Texture2D>(); 
+    private static Dictionary<Color, Texture2D> plainTextureDictionary; 
     public static Texture2D CreatePlainColorTexture(Color color)
     {
+        if (plainTextureDictionary == null)
+            plainTextureDictionary = new Dictionary<Color, Texture2D>();
+
         if (plainTextureDictionary.ContainsKey(color))
             return plainTextureDictionary[color];
 

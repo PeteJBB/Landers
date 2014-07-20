@@ -43,6 +43,26 @@ Material:
         first:
           name: _EmissionLM
         second: 132.389999
+      data:
+        first:
+          name: _GridThickness
+        second: .00100000005
+      data:
+        first:
+          name: _GridSpacingX
+        second: .00999999978
+      data:
+        first:
+          name: _GridSpacingY
+        second: 1
+      data:
+        first:
+          name: _GridOffsetX
+        second: 0
+      data:
+        first:
+          name: _GridOffsetY
+        second: 0
     m_Colors:
       data:
         first:
@@ -64,3 +84,11 @@ Material:
         first:
           name: _MainColor
         second: {r: 0, g: .315162301, b: .83088237, a: 1}
+      data:
+        first:
+          name: _GridColour
+        second: {r: .5, g: 1, b: 1, a: 1}
+      data:
+        first:
+          name: _BaseColour
+        second: {r: 0, g: 0, b: 0, a: 0}
