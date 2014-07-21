@@ -1,0 +1,12 @@
+fileFormatVersion: 2
+guid: 94a0316a05398c5488acfe61dd33985c
+MonoImporter:
+  serializedVersion: 2
+  defaultReferences:
+  - CenterTexture: {fileID: 2800000, guid: f9862a97c2af8d04f83e13f499667a8c, type: 3}
+  - HorizonTexture: {fileID: 2800000, guid: 17aeb66778b236f47a498128edd45740, type: 3}
+  - CompassTexture: {fileID: 2800000, guid: f6be22a77e2b1644788ef2d1b4905733, type: 3}
+  - SlipTexture: {fileID: 2800000, guid: b02f2d2a74956f043b204546259e2bde, type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 

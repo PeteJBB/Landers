@@ -53,6 +53,30 @@ public class InputManager
         return map.AxisValue;
     }
 
+    public static float GetAxisRaw(InputMapping map)
+    {
+        if (map.PositiveKey != null && Input.GetKey(map.PositiveKey.Value))
+        {
+            return 1;
+        }
+
+        if (map.NegativeKey != null && Input.GetKey(map.NegativeKey.Value))
+        {
+            return -1;
+        }
+
+        if (map.JoystickAxis != null)
+        {
+            var val = Input.GetAxisRaw(map.JoystickAxis);
+            if (map.InvertJoystick)
+                val = -val;
+
+            return val;
+        }
+
+        return 0;
+    }
+
     public static bool GetButtonDown(InputMapping map)
     {
         if (map.JoystickButton != null && Input.GetKeyDown("joystick 1 button " + map.JoystickButton))

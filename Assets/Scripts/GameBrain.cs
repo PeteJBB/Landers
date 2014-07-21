@@ -5,7 +5,7 @@ public class GameBrain : MonoBehaviour
 {
     public static GameView CurrentView = GameView.Internal;
 
-    private const float LanderSpawnDelay = 15;
+    private const float LanderSpawnDelay = 20;
     
     private int _spawnCount = 0;
     private float _lastSpawn;

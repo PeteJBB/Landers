@@ -23,7 +23,7 @@ public class Dropship : MonoBehaviour
 
     private const float _spawnDelay = 2f;
     private float _nextSpawnTime;
-    private const int _spawnAmount = 6;
+    private const int _spawnAmount = 5;
     private int _spawnCount = 0;
 
     public LandingSite LandingSite;
