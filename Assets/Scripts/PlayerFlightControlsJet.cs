@@ -23,7 +23,8 @@ public class PlayerFlightControlsJet : MonoBehaviour
     private const float _pitchStrength = 40;//24;
     private const float _yawStrength = 17;//30;
     private const float _rollStrength = 12;//12;
-    private const float _brakeStrength = 400;
+    private const float _brakeStrength = 0.25f;
+    private const float _wheelBrakesMultiplier = 40f;
 
     const float _enginePower = 400;
     const float _jetPower = 500;
@@ -106,11 +107,11 @@ public class PlayerFlightControlsJet : MonoBehaviour
         rigidbody.AddRelativeForce(new Vector3(0, 0, thrust));
 
         // air brakes
-        var brakeForce = (_brakesControl * -speed);
+        var brakeForce = (_brakesControl * -speed * _brakeStrength);
         // wheel brakes
         if (_brakesControl > 0 && _wheels.All(x => x.isGrounded))
         {
-            brakeForce *= 10;
+            brakeForce *= _wheelBrakesMultiplier;
             brakeForce += brakeForce > 0
                 ? 50
                 : -50;
@@ -127,9 +128,28 @@ public class PlayerFlightControlsJet : MonoBehaviour
             -relativeVel.x * Mathf.Abs(relativeVel.x) * 0.75f,
             -relativeVel.y * Mathf.Abs(relativeVel.y) * 1f,
             -relativeVel.z * Mathf.Abs(relativeVel.z) * 0.025f
-            );
+        );
         rigidbody.AddRelativeForce(dragVector * deltaMultiplier);
 
+        // extra lift due to Angle Of Attack
+        var aoa = Vector3.Angle(transform.forward.IgnoreX(), rigidbody.velocity.IgnoreX());
+        if (aoa < 90)
+        {
+            if (aoa > 45)
+                aoa = 45 + (45 - aoa);
+            if (relativeVel.y > 0)
+                aoa = -aoa;
+
+            var extraLift = Mathf.Clamp(aoa / 45f, -1, 1) * lift;
+            print(extraLift);
+            
+            var aoaVector = new Vector3(
+                0,
+                extraLift,
+                0
+                );
+            rigidbody.AddRelativeForce(aoaVector * deltaMultiplier);
+        }
         // weathervaning
         var correctionVector = new Vector3(
             -relativeVel.y * Mathf.Abs(relativeVel.y) * 0.03f,
@@ -143,7 +163,11 @@ public class PlayerFlightControlsJet : MonoBehaviour
 	{
 		GUI.TextArea(new Rect(20, 20, 100, 20), "Alt: " + transform.position.y, Utility.BasicGuiStyle );
 		GUI.TextArea(new Rect(20, 50, 100, 20), "Throttle: " + Mathf.Round(_throttle * 100) + "%", Utility.BasicGuiStyle);
-        GUI.TextArea(new Rect(20, 80, 100, 20), "Airspeed: " + Mathf.Round(rigidbody.velocity.magnitude), Utility.BasicGuiStyle);
+
+        var relativeVel = rigidbody.transform.worldToLocalMatrix * rigidbody.velocity;
+        var speed = relativeVel.z;
+
+        GUI.TextArea(new Rect(20, 80, 100, 20), "Airspeed: " + Mathf.Round(speed), Utility.BasicGuiStyle);
 
 	    var damage = GetComponent<Damageable>();
 	    var health = damage.Health / damage.MaxHealth * 100;
@@ -151,8 +175,6 @@ public class PlayerFlightControlsJet : MonoBehaviour
         GUI.TextArea(new Rect(120, 80, 100, 20), "Ammo: " + GetComponent<MachineGun>().Ammo, Utility.BasicGuiStyle);
 
         // control curve
-        var relativeVel = rigidbody.transform.worldToLocalMatrix * rigidbody.velocity;
-        var speed = relativeVel.z;
         var controlCurve = SurfaceControlBySpeed.Evaluate(speed / _surfaceControlTopSpeed);
         GUI.TextArea(new Rect(20, 110, 100, 20), "Control Curve: " + controlCurve, Utility.BasicGuiStyle);
         GUI.TextArea(new Rect(20, 140, 100, 20), "Brakes: " + _brakesControl, Utility.BasicGuiStyle);

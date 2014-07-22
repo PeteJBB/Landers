@@ -31,7 +31,7 @@ public class Utility
         normal = new GUIStyleState()
         {
             textColor = Color.white,
-            background = Utility.CreatePlainColorTexture(Color.black)
+            //background = Utility.CreatePlainColorTexture(Color.black)
         },
         alignment = TextAnchor.MiddleCenter,
         fontSize = 30

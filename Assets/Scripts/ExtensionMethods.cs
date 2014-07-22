@@ -20,8 +20,18 @@ public static class ExtensionMethods
         teamMember.Team = team;
     }
 
-    public static Vector3 IgnoreY(this Vector3 v, float? newY = null)
+    public static Vector3 IgnoreX(this Vector3 v, float newX = 0)
     {
-        return new Vector3(v.x, newY ?? 0, v.z);
+        return new Vector3(newX, v.y, v.z);
+    }
+    
+    public static Vector3 IgnoreY(this Vector3 v, float newY = 0)
+    {
+        return new Vector3(v.x, newY, v.z);
+    }
+
+    public static Vector3 IgnoreZ(this Vector3 v, float newZ = 0)
+    {
+        return new Vector3(v.x, v.y, newZ);
     }
 }

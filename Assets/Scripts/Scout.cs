@@ -1,9 +1,11 @@
-﻿using System.Linq;
+﻿using System.CodeDom;
+using System.Linq;
 using UnityEngine;
 using System.Collections;
 
 public class Scout : MonoBehaviour
 {
+    private const float _enginePower = 400;
     private const float _topSpeed = 50;
     private const float _turnRate = 25;
     private const float _rollRate = 90;
@@ -16,13 +18,17 @@ public class Scout : MonoBehaviour
     private GameObject _target;
     private Vector3 _waypoint;
     private Transform _mesh;
+    private float _birthday;
 
-    private ScoutState _state = ScoutState.Cruising;
+    private ScoutState _state = ScoutState.EnteringZone;
 
     void Start()
     {
+        _birthday = Time.fixedTime;
+
         _target = FindNextTarget();
         _mesh = transform.FindChild("scout");
+        rigidbody.velocity = transform.forward * 2000;
     }
 
     void Update()
@@ -34,6 +40,9 @@ public class Scout : MonoBehaviour
 
         switch (_state)
         {
+            case ScoutState.EnteringZone:
+                EnteringZone();
+                break;
             case ScoutState.Cruising:
                 Cruising();
                 break;
@@ -52,25 +61,20 @@ public class Scout : MonoBehaviour
     {
         var trail = transform.FindChild("trail");
         trail.transform.parent = null;
-        Destroy(trail.gameObject, trail.GetComponent<TrailRenderer>().time);
+        //Destroy(trail.gameObject, trail.GetComponent<TrailRenderer>().time);
     }
 
     private void UpdatePhysics()
     {
         var deltaMultiplier = Time.deltaTime / Time.fixedDeltaTime;
         var relativeVel = transform.worldToLocalMatrix * rigidbody.velocity;
-        var speed = relativeVel.z;
 
-        // engines
-        //if (speed < _topSpeed)
-        //{
-            rigidbody.AddForce(transform.forward.normalized * 300 * deltaMultiplier);
-        //}
+        rigidbody.AddForce(transform.forward.normalized * _enginePower * deltaMultiplier);
 
         // drag by facing area
         var dragVector = new Vector3(
-            -relativeVel.x * Mathf.Abs(relativeVel.x) * 0.75f,
-            -relativeVel.y * Mathf.Abs(relativeVel.y) * 1f,
+            -relativeVel.x * Mathf.Abs(relativeVel.x) * 2f,
+            -relativeVel.y * Mathf.Abs(relativeVel.y) * 2f,
             -relativeVel.z * Mathf.Abs(relativeVel.z) * 0.025f
             );
         rigidbody.AddRelativeForce(dragVector * deltaMultiplier);
@@ -82,7 +86,7 @@ public class Scout : MonoBehaviour
         var look = Quaternion.LookRotation(dir);
         transform.rotation = Quaternion.RotateTowards(transform.rotation, look, _turnRate * Time.deltaTime);
 
-        var angle = Vector3.Angle(transform.forward, dir);
+        var angle = Vector3.Angle(transform.forward.IgnoreY(), dir.IgnoreY());
         var rollAngle = Mathf.Lerp(0, 90, Mathf.Clamp(angle / 10, 0, 1));
 
         var rel = transform.worldToLocalMatrix * dir;
@@ -91,6 +95,14 @@ public class Scout : MonoBehaviour
 
         var roll = Quaternion.Euler(0, 0, rollAngle);
         _mesh.transform.localRotation = Quaternion.RotateTowards(_mesh.transform.localRotation, roll, _rollRate * Time.deltaTime);
+    }
+
+    private void EnteringZone()
+    {
+        if (Time.fixedTime - _birthday > 2)
+        {
+            _state = ScoutState.Cruising;
+        }
     }
 
     private void Cruising()
@@ -134,16 +146,26 @@ public class Scout : MonoBehaviour
     private void ClimbingOut()
     {
         // turn
-        var dir = _waypoint - transform.position;
-        var look = Quaternion.LookRotation(dir);
-        transform.rotation = Quaternion.RotateTowards(transform.rotation, look, _turnRate * Time.deltaTime);
+        TurnTowards(_waypoint);
 
         var dist = Vector3.Distance(transform.position, _waypoint);
         if (dist < _waypointReachDist)
         {
-            //print(Time.fixedTime + ": Diving Attack");
             _waypoint = _target.transform.position;
-            _state = ScoutState.DivingAttack;
+            _state = ScoutState.Cruising;
+        }
+    }
+
+    private void ComingAround()
+    {
+        // turn
+        TurnTowards(_waypoint);
+
+        var dist = Vector3.Distance(transform.position, _waypoint);
+        if (dist < _waypointReachDist)
+        {
+            _waypoint = _target.transform.position;
+            _state = ScoutState.ComingAround;
         }
     }
 
@@ -170,6 +192,7 @@ public class Scout : MonoBehaviour
 
     private enum ScoutState
     {
+        EnteringZone,
         Cruising,
         DivingAttack,
         ClimbingOut,

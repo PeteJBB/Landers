@@ -145,7 +145,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100008}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1662.87866, y: .870841742, z: 5.80444336}
+  m_LocalPosition: {x: -406.600403, y: .870841742, z: 5.80444336}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 400006}
@@ -297,9 +297,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 867eab02cb5387044b45e867ae6d961d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Health: 2000
-  MaxHealth: 2000
+  Health: 250
+  MaxHealth: 250
   ExplosionPrefab: {fileID: 100004, guid: 35614ed6df22bba43870fd229bf9438f, type: 2}
+  DamageEffectPrefab: {fileID: 0}
   DontDestroy: 0
 --- !u!114 &11400002
 MonoBehaviour:

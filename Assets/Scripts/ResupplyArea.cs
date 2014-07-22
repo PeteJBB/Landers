@@ -23,12 +23,15 @@ public class ResupplyArea : MonoBehaviour
         {
             foreach (var g in CurrentlyResupplying)
             {
-                var mg = g.GetComponent<MachineGun>();
-                if (mg.Ammo < mg.MaxAmmo)
-                    mg.Ammo = (int)Mathf.Min(mg.MaxAmmo, mg.Ammo + _mgResupplyRate);
+                if (g.rigidbody.velocity.magnitude <= 0.1f)
+                {
+                    var mg = g.GetComponent<MachineGun>();
+                    if (mg.Ammo < mg.MaxAmmo)
+                        mg.Ammo = (int) Mathf.Min(mg.MaxAmmo, mg.Ammo + _mgResupplyRate);
 
-                var dam = g.GetComponent<Damageable>();
-                dam.Health = (int)Mathf.Min(dam.MaxHealth, dam.Health + _healthResupplyRate);
+                    var dam = g.GetComponent<Damageable>();
+                    dam.Health = (int) Mathf.Min(dam.MaxHealth, dam.Health + _healthResupplyRate);
+                }
             }
 
             _lastResupplyTime = Time.fixedTime;
