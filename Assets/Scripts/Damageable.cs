@@ -18,6 +18,8 @@ public class Damageable : MonoBehaviour
     {
         Health -= amount;
 
+        //print(name + " is hit! " + Health + " health left");
+
         if (DamageEffectPrefab != null)
         {
             Instantiate(ExplosionPrefab, transform.position, transform.rotation);

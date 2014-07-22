@@ -21,7 +21,7 @@ public class PlayerFlightControlsJet : MonoBehaviour
     private const float _liftTopSpeed = 70f;
 
     private const float _pitchStrength = 40;//24;
-    private const float _yawStrength = 45;//30;
+    private const float _yawStrength = 17;//30;
     private const float _rollStrength = 12;//12;
     private const float _brakeStrength = 400;
 
@@ -126,7 +126,7 @@ public class PlayerFlightControlsJet : MonoBehaviour
         dragVector = new Vector3(
             -relativeVel.x * Mathf.Abs(relativeVel.x) * 0.75f,
             -relativeVel.y * Mathf.Abs(relativeVel.y) * 1f,
-            -relativeVel.z * Mathf.Abs(relativeVel.z) * 0.05f
+            -relativeVel.z * Mathf.Abs(relativeVel.z) * 0.025f
             );
         rigidbody.AddRelativeForce(dragVector * deltaMultiplier);
 

@@ -19,4 +19,9 @@ public static class ExtensionMethods
             throw new Exception("Game object " + g + " does not have a TeamMember component to set");
         teamMember.Team = team;
     }
+
+    public static Vector3 IgnoreY(this Vector3 v, float? newY = null)
+    {
+        return new Vector3(v.x, newY ?? 0, v.z);
+    }
 }

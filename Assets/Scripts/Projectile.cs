@@ -8,6 +8,8 @@ public class Projectile : MonoBehaviour
     public float ExplosionRadius;
     public float ExplosionDamage;
 
+    private Damageable _directDamageObject;
+
     void Start()
     {
         
@@ -23,7 +25,10 @@ public class Projectile : MonoBehaviour
             var myTeam = gameObject.GetTeam();
             var damageable = hitInfo.collider.transform.root.GetComponent<Damageable>();
             if (damageable != null && (myTeam == 0 || myTeam != damageable.gameObject.GetTeam()))
+            {
+                _directDamageObject = damageable;
                 damageable.ApplyDamage(DirectDamage);
+            }
 
             Explode(hitInfo.point);
             Destroy(gameObject);
@@ -44,7 +49,8 @@ public class Projectile : MonoBehaviour
             {
                 var myTeam = gameObject.GetTeam();
                 var damageable = c.transform.root.GetComponent<Damageable>();
-                if (damageable != null && (myTeam == 0 || myTeam != damageable.gameObject.GetTeam()))
+                if (damageable != null && damageable != _directDamageObject 
+                    && (myTeam == 0 || myTeam != damageable.gameObject.GetTeam()))
                 {
                     var dist = Vector3.Distance(c.ClosestPointOnBounds(point), point);
                     var damage = Mathf.Lerp(0, ExplosionDamage, 1 - (dist / ExplosionRadius));
