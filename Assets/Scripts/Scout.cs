@@ -27,7 +27,7 @@ public class Scout : MonoBehaviour
         _birthday = Time.fixedTime;
 
         _target = FindNextTarget();
-        _mesh = transform.FindChild("scout");
+        _mesh = transform.FindChild("mesh");
         rigidbody.velocity = transform.forward * 2000;
     }
 
@@ -59,9 +59,11 @@ public class Scout : MonoBehaviour
 
     private void OnDestroy()
     {
-        var trail = transform.FindChild("trail");
-        trail.transform.parent = null;
-        //Destroy(trail.gameObject, trail.GetComponent<TrailRenderer>().time);
+        foreach (var t in _mesh.FindChildren("trail"))
+        {
+            t.parent = null;
+            //Destroy(t.gameObject, t.time);
+        }
     }
 
     private void UpdatePhysics()
