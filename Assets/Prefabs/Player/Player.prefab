@@ -18,6 +18,7 @@ GameObject:
   - 114: {fileID: 11400006}
   - 114: {fileID: 11400010}
   - 114: {fileID: 11400012}
+  - 114: {fileID: 11400014}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -368,25 +369,25 @@ MonoBehaviour:
       inSlope: .33950004
       outSlope: .33950004
       tangentMode: 0
-    - time: .342814624
-      value: .575504661
+    - time: .244009405
+      value: .621691883
       inSlope: 3.32057476
       outSlope: 3.32057476
       tangentMode: 0
-    - time: .587933362
+    - time: .501703382
       value: 1.00584781
       inSlope: 0
       outSlope: 0
       tangentMode: 0
-    - time: .656560898
-      value: 1.00468874
-      inSlope: .0158353876
-      outSlope: .0158353876
-      tangentMode: 0
-    - time: .995237947
-      value: .706191838
+    - time: .790159106
+      value: .997355342
       inSlope: 0
       outSlope: 0
+      tangentMode: 0
+    - time: .998830855
+      value: .676500082
+      inSlope: -.323147446
+      outSlope: -.323147446
       tangentMode: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
@@ -395,13 +396,13 @@ MonoBehaviour:
     m_Curve:
     - time: 0
       value: -.00414937688
-      inSlope: 1.29304969
-      outSlope: 1.29304969
+      inSlope: .837942243
+      outSlope: .837942243
       tangentMode: 0
     - time: 1
       value: 1
-      inSlope: 0
-      outSlope: 0
+      inSlope: -.023199141
+      outSlope: -.023199141
       tangentMode: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
@@ -420,6 +421,25 @@ MonoBehaviour:
   HorizonTexture: {fileID: 2800000, guid: 9a5f410ccc37a0c479c0a66a3d66d17a, type: 3}
   CompassTexture: {fileID: 2800000, guid: 2cea207755fb79547aabf5de09e4e22f, type: 3}
   FlightPathTexture: {fileID: 2800000, guid: 1630fe98c260b66459d8e33a99e7a500, type: 3}
+--- !u!114 &11400014
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100000}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c5a18f10700038949b279f8fdcff95e4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MissilePrefab: {fileID: 100002, guid: 41047ca6ee7f64d478bab9b6d3d651d5, type: 2}
+  Ammo: 50
+  MaxAmmo: 50
+  Innaccuracy: 1
+  FireDelay: .100000001
+  Offsets:
+  - {x: 1.13, y: -1, z: .150000006}
+  - {x: -1.13, y: -1, z: .150000006}
 --- !u!124 &12400000
 Behaviour:
   m_ObjectHideFlags: 1

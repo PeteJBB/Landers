@@ -84,6 +84,11 @@ public class PlayerFlightControlsJet : MonoBehaviour
             var mg = GetComponent<MachineGun>();
             mg.Fire();
         }
+        if (InputManager.GetButtonDown(InputMapping.FireSecondary))
+        {
+            var ml = GetComponent<MissileLauncher>();
+            ml.Fire();
+        }
 	}
 
     private void UpdatePhysics()
@@ -141,7 +146,6 @@ public class PlayerFlightControlsJet : MonoBehaviour
                 aoa = -aoa;
 
             var extraLift = Mathf.Clamp(aoa / 45f, -1, 1) * lift;
-            print(extraLift);
             
             var aoaVector = new Vector3(
                 0,

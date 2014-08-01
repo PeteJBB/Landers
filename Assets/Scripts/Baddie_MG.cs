@@ -107,7 +107,7 @@ public class Baddie_MG : MonoBehaviour
     {
         var dist = Vector3.Distance(_turret.position, obj.transform.position);
         var velocity = 400;
-        var bulletTimeToTarget = velocity / dist * Time.fixedDeltaTime;
+        var bulletTimeToTarget = dist / velocity;
         var leadPoint = obj.transform.position + (obj.rigidbody.velocity * bulletTimeToTarget);
 
         return leadPoint;

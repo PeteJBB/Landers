@@ -178,6 +178,13 @@ public class InputMapping
         PositiveKey = KeyCode.Space
     };
 
+    public static InputMapping FireSecondary = new InputMapping()
+    {
+        JoystickAxis = XboxAxis.Triggers,
+        InvertJoystick = false,
+        PositiveKey = KeyCode.E
+    };
+
     public static InputMapping Transform = new InputMapping()
     {
         JoystickButton = XboxButtons.X,

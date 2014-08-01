@@ -57,15 +57,6 @@ public class Scout : MonoBehaviour
         UpdatePhysics();
     }
 
-    private void OnDestroy()
-    {
-        foreach (var t in _mesh.FindChildren("trail"))
-        {
-            t.parent = null;
-            //Destroy(t.gameObject, t.time);
-        }
-    }
-
     private void UpdatePhysics()
     {
         var deltaMultiplier = Time.deltaTime / Time.fixedDeltaTime;

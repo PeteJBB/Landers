@@ -7,6 +7,9 @@ public class Projectile : MonoBehaviour
     public GameObject ExplosionPrefab;
     public float ExplosionRadius;
     public float ExplosionDamage;
+    public float EnginePower;
+
+    public GameObject Originator;
 
     private Damageable _directDamageObject;
 
@@ -15,23 +18,35 @@ public class Projectile : MonoBehaviour
         
     }
 
+    void Update()
+    {
+        if (EnginePower > 0)
+        {
+            rigidbody.AddRelativeForce(0, 0, EnginePower);
+        }
+    }
+
     void FixedUpdate()
     {
         var ray = new Ray(transform.position - (rigidbody.velocity * Time.fixedDeltaTime), rigidbody.velocity.normalized);
         RaycastHit hitInfo;
         if (Physics.Raycast(ray, out hitInfo, rigidbody.velocity.magnitude * Time.fixedDeltaTime))
         {
-            // collision
-            var myTeam = gameObject.GetTeam();
-            var damageable = hitInfo.collider.transform.root.GetComponent<Damageable>();
-            if (damageable != null && (myTeam == 0 || myTeam != damageable.gameObject.GetTeam()))
+            if (hitInfo.collider.gameObject != Originator
+                && hitInfo.collider.transform.root.gameObject != Originator)
             {
-                _directDamageObject = damageable;
-                damageable.ApplyDamage(DirectDamage);
-            }
+                // collision
+                var myTeam = gameObject.GetTeam();
+                var damageable = hitInfo.collider.transform.root.GetComponent<Damageable>();
+                if (damageable != null && (myTeam == 0 || myTeam != damageable.gameObject.GetTeam()))
+                {
+                    _directDamageObject = damageable;
+                    damageable.ApplyDamage(DirectDamage);
+                }
 
-            Explode(hitInfo.point);
-            Destroy(gameObject);
+                Explode(hitInfo.point);
+                Destroy(gameObject);
+            }
         }
     }
 

@@ -2,14 +2,14 @@
 using UnityEngine;
 using System.Collections;
 
-public class MachineGun : MonoBehaviour
+public class MissileLauncher : MonoBehaviour
 {
-    public GameObject BulletPrefab;
+    public GameObject MissilePrefab;
     public int Ammo = 200;
     public int MaxAmmo = 200;
     public float Innaccuracy = 0;
 
-    public float FireDelay = 0.2f;
+    public float FireDelay = 0.06f;
     private float _lastFireTime = 0;
 
     public Vector3[] Offsets = new Vector3[1];
@@ -31,9 +31,10 @@ public class MachineGun : MonoBehaviour
                 var dir = inaccuracyAdjustment * transform.forward;
                 var rotation = Quaternion.LookRotation(dir);
 
-                var b = (GameObject)Instantiate(BulletPrefab, pos, rotation);
+                var b = (GameObject)Instantiate(MissilePrefab, pos, rotation);
                 b.rigidbody.velocity = rigidbody != null ? rigidbody.velocity : Vector3.zero;
                 b.rigidbody.AddForce(b.transform.forward * 400);
+                b.GetComponent<Projectile>().Originator = gameObject;
 
                 b.SetTeam(gameObject.GetTeam());
 
