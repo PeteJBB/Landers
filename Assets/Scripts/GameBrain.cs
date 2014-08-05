@@ -6,6 +6,7 @@ public class GameBrain : MonoBehaviour
     public static GameView CurrentView = GameView.Internal;
 
     public GameObject ScoutPrefab;
+    public GameObject AttackPlanePrefab;
 
     private int _currentWave = 0;
     private float _waveCompleteTime;
@@ -44,8 +45,8 @@ public class GameBrain : MonoBehaviour
                 // spawn ships
                 Instantiate(ScoutPrefab, new Vector3(1201, 180, -1499), Quaternion.Euler(0, 317, 0));
                 Instantiate(ScoutPrefab, new Vector3(1220, 180, -1505), Quaternion.Euler(0, 317, 0));
-                Instantiate(ScoutPrefab, new Vector3(1205, 180, -1519), Quaternion.Euler(0, 317, 0));
-                Instantiate(ScoutPrefab, new Vector3(1207, 180, -1538), Quaternion.Euler(0, 317, 0));
+                Instantiate(AttackPlanePrefab, new Vector3(1205, 180, -1519), Quaternion.Euler(0, 317, 0));
+                Instantiate(AttackPlanePrefab, new Vector3(1207, 180, -1538), Quaternion.Euler(0, 317, 0));
             }
         }
         else if (FindObjectsOfType<Scout>().Length == 0)

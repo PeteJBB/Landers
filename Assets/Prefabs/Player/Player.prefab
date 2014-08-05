@@ -145,7 +145,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100004}
   m_LocalRotation: {x: 0, y: -3.99406531e-07, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: .5, y: .200000003, z: -.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 400000}
@@ -157,7 +157,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100006}
   m_LocalRotation: {x: 0, y: -3.99406531e-07, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -.5, y: .200000003, z: -.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 400000}
@@ -168,8 +168,8 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100008}
-  m_LocalRotation: {x: 0, y: -3.99406531e-07, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: .5, y: .200000003, z: 1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 400000}
@@ -181,7 +181,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100010}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -.5, y: .200000003, z: 1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 400000}
@@ -432,10 +432,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c5a18f10700038949b279f8fdcff95e4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  IsGuiActive: 1
+  LockTexture: {fileID: 2800000, guid: 4eef9e2660035b1438119b78fc418b46, type: 3}
   MissilePrefab: {fileID: 100002, guid: 41047ca6ee7f64d478bab9b6d3d651d5, type: 2}
-  Ammo: 50
-  MaxAmmo: 50
+  Ammo: 6
+  MaxAmmo: 6
   Innaccuracy: 1
+  ScanDelay: .200000003
+  MaxDetectionAngle: 45
+  LockTarget: {fileID: 0}
   FireDelay: .100000001
   Offsets:
   - {x: 1.13, y: -1, z: .150000006}
@@ -453,7 +458,7 @@ WheelCollider:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100004}
-  m_Center: {x: .5, y: .200000003, z: -.5}
+  m_Center: {x: 0, y: 0, z: 0}
   m_Radius: .200000003
   m_SuspensionDistance: .5
   m_SuspensionSpring:
@@ -469,9 +474,9 @@ WheelCollider:
     stiffnessFactor: 1
   m_SidewaysFriction:
     extremumSlip: 1
-    extremumValue: 20000
+    extremumValue: 20
     asymptoteSlip: 2
-    asymptoteValue: 10000
+    asymptoteValue: 10
     stiffnessFactor: 1
   m_Enabled: 1
 --- !u!146 &14600002
@@ -480,7 +485,7 @@ WheelCollider:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100006}
-  m_Center: {x: -.5, y: .200000003, z: -.5}
+  m_Center: {x: 0, y: 0, z: 0}
   m_Radius: .200000003
   m_SuspensionDistance: .5
   m_SuspensionSpring:
@@ -496,9 +501,9 @@ WheelCollider:
     stiffnessFactor: 1
   m_SidewaysFriction:
     extremumSlip: 1
-    extremumValue: 20000
+    extremumValue: 20
     asymptoteSlip: 2
-    asymptoteValue: 10000
+    asymptoteValue: 10
     stiffnessFactor: 1
   m_Enabled: 1
 --- !u!146 &14600004
@@ -507,7 +512,7 @@ WheelCollider:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100008}
-  m_Center: {x: .5, y: .200000003, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
   m_Radius: .200000003
   m_SuspensionDistance: .5
   m_SuspensionSpring:
@@ -523,9 +528,9 @@ WheelCollider:
     stiffnessFactor: 1
   m_SidewaysFriction:
     extremumSlip: 1
-    extremumValue: 20000
+    extremumValue: 20
     asymptoteSlip: 2
-    asymptoteValue: 10000
+    asymptoteValue: 10
     stiffnessFactor: 1
   m_Enabled: 1
 --- !u!146 &14600006
@@ -534,7 +539,7 @@ WheelCollider:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100010}
-  m_Center: {x: -.5, y: .200000003, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
   m_Radius: .200000003
   m_SuspensionDistance: .5
   m_SuspensionSpring:
@@ -550,9 +555,9 @@ WheelCollider:
     stiffnessFactor: 1
   m_SidewaysFriction:
     extremumSlip: 1
-    extremumValue: 20000
+    extremumValue: 20
     asymptoteSlip: 2
-    asymptoteValue: 10000
+    asymptoteValue: 10
     stiffnessFactor: 1
   m_Enabled: 1
 --- !u!1001 &100100000

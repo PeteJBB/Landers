@@ -84,7 +84,7 @@ public class DestroyOnCollision : MonoBehaviour
                 {
                     var dist = Vector3.Distance(c.ClosestPointOnBounds(point), point);
                     var damage = Mathf.Lerp(0, ExplosionDamage, 1 - (dist / ExplosionRadius));
-                    damageable.ApplyDamage(damage);
+                    damageable.ApplyDamage(damage, gameObject);
                 }
             }
         }

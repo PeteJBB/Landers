@@ -151,7 +151,7 @@ public class Baddie : MonoBehaviour
                 {
                     // turn beam off and apply damage
                     _beam.enabled = false;
-                    _target.GetComponent<Damageable>().ApplyDamage(50);
+                    _target.GetComponent<Damageable>().ApplyDamage(50, gameObject);
 
                     // move
                     var dest = GetRandomDestination(_target.transform.position, _attackRange);

@@ -28,7 +28,25 @@ public class HudBasics : MonoBehaviour
                 GUI.TextArea(rext, "YOU'RE DEAD, DUDE", Utility.BigMessageGuiStyle);
             }
 	    }
+
+        DrawDebugInfo();
 	}
+
+    void DrawDebugInfo()
+    {
+        GUI.TextArea(new Rect(20, 20, 100, 20), "Alt: " + transform.position.y, Utility.BasicGuiStyle);
+        
+        var relativeVel = rigidbody.transform.worldToLocalMatrix * rigidbody.velocity;
+        var speed = relativeVel.z;
+
+        GUI.TextArea(new Rect(20, 80, 100, 20), "Airspeed: " + Mathf.Round(speed), Utility.BasicGuiStyle);
+
+        var damage = GetComponent<Damageable>();
+        var health = damage.Health / damage.MaxHealth * 100;
+        GUI.TextArea(new Rect(120, 50, 100, 20), "Health: " + health.ToString("0"), Utility.BasicGuiStyle);
+        GUI.TextArea(new Rect(120, 80, 100, 20), "MG Ammo: " + GetComponent<MachineGun>().Ammo, Utility.BasicGuiStyle);
+        GUI.TextArea(new Rect(120, 110, 100, 20), "Missiles: " + GetComponent<MissileLauncher>().Ammo, Utility.BasicGuiStyle);
+    }
 
 	void RenderHorizon()
 	{

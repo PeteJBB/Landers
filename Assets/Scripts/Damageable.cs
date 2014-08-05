@@ -14,11 +14,12 @@ public class Damageable : MonoBehaviour
        
     }
 
-    public void ApplyDamage(float amount)
+    public void ApplyDamage(float amount, GameObject obj)
     {
         Health -= amount;
 
-        //print(name + " is hit! " + Health + " health left");
+        if(obj.name.StartsWith("Missile"))
+            print(string.Format("{0} does {1} damage to {2} ({3} health left)", obj, amount, name, Health));
 
         if (DamageEffectPrefab != null)
         {

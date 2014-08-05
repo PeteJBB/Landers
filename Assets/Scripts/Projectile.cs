@@ -41,7 +41,7 @@ public class Projectile : MonoBehaviour
                 if (damageable != null && (myTeam == 0 || myTeam != damageable.gameObject.GetTeam()))
                 {
                     _directDamageObject = damageable;
-                    damageable.ApplyDamage(DirectDamage);
+                    damageable.ApplyDamage(DirectDamage, gameObject);
                 }
 
                 Explode(hitInfo.point);
@@ -50,7 +50,7 @@ public class Projectile : MonoBehaviour
         }
     }
 
-    private void Explode(Vector3 point)
+    public void Explode(Vector3 point)
     {
         if (ExplosionPrefab != null)
         {
@@ -69,7 +69,7 @@ public class Projectile : MonoBehaviour
                 {
                     var dist = Vector3.Distance(c.ClosestPointOnBounds(point), point);
                     var damage = Mathf.Lerp(0, ExplosionDamage, 1 - (dist / ExplosionRadius));
-                    damageable.ApplyDamage(damage);
+                    damageable.ApplyDamage(damage, gameObject);
                 }
             }
         }

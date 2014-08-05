@@ -37,6 +37,7 @@ public class PlayerFlightControlsJet : MonoBehaviour
 	private float _throttle;
 	private Vector3 dragVector;
 	private float deltaMultiplier;
+    private float controlCurve;
 
     private WheelCollider[] _wheels;
 	
@@ -97,7 +98,7 @@ public class PlayerFlightControlsJet : MonoBehaviour
         var speed = relativeVel.z;
         
         // pitch / yaw / roll
-        var controlCurve = SurfaceControlBySpeed.Evaluate(speed / _surfaceControlTopSpeed);
+        controlCurve = SurfaceControlBySpeed.Evaluate(speed / _surfaceControlTopSpeed);
         var pitch = _pitchControl * _pitchStrength * controlCurve;
         rigidbody.AddRelativeTorque(new Vector3(pitch * deltaMultiplier, 0, 0));
 
@@ -113,6 +114,7 @@ public class PlayerFlightControlsJet : MonoBehaviour
 
         // air brakes
         var brakeForce = (_brakesControl * -speed * _brakeStrength);
+
         // wheel brakes
         if (_brakesControl > 0 && _wheels.All(x => x.isGrounded))
         {
@@ -122,6 +124,13 @@ public class PlayerFlightControlsJet : MonoBehaviour
                 : -50;
         }
         rigidbody.AddRelativeForce(0, 0, brakeForce * deltaMultiplier);
+
+        // wheel steering (taxi)
+        Transform _wheel_frontleft = transform.FindChild("wheel_frontleft");
+        Transform _wheel_frontright = transform.FindChild("wheel_frontright");
+        var steer = _yawControl * 10f;
+        _wheel_frontleft.localRotation = Quaternion.Euler(0, steer, 0);
+        _wheel_frontright.localRotation = Quaternion.Euler(0, steer, 0);
 
         // lift
         var liftZero = rigidbody.mass * Physics.gravity.magnitude * 1.05f; // enough lift for takeoff / level flight
@@ -165,23 +174,12 @@ public class PlayerFlightControlsJet : MonoBehaviour
 	
 	void OnGUI()
 	{
-		GUI.TextArea(new Rect(20, 20, 100, 20), "Alt: " + transform.position.y, Utility.BasicGuiStyle );
-		GUI.TextArea(new Rect(20, 50, 100, 20), "Throttle: " + Mathf.Round(_throttle * 100) + "%", Utility.BasicGuiStyle);
 
-        var relativeVel = rigidbody.transform.worldToLocalMatrix * rigidbody.velocity;
-        var speed = relativeVel.z;
-
-        GUI.TextArea(new Rect(20, 80, 100, 20), "Airspeed: " + Mathf.Round(speed), Utility.BasicGuiStyle);
-
-	    var damage = GetComponent<Damageable>();
-	    var health = damage.Health / damage.MaxHealth * 100;
-        GUI.TextArea(new Rect(120, 50, 100, 20), "Health: " + health.ToString("0"), Utility.BasicGuiStyle);
-        GUI.TextArea(new Rect(120, 80, 100, 20), "Ammo: " + GetComponent<MachineGun>().Ammo, Utility.BasicGuiStyle);
+        GUI.TextArea(new Rect(20, 50, 100, 20), "Throttle: " + Mathf.Round(_throttle * 100) + "%", Utility.BasicGuiStyle);
 
         // control curve
-        var controlCurve = SurfaceControlBySpeed.Evaluate(speed / _surfaceControlTopSpeed);
-        GUI.TextArea(new Rect(20, 110, 100, 20), "Control Curve: " + controlCurve, Utility.BasicGuiStyle);
-        GUI.TextArea(new Rect(20, 140, 100, 20), "Brakes: " + _brakesControl, Utility.BasicGuiStyle);
+        GUI.TextArea(new Rect(20, 140, 100, 20), "Control Curve: " + controlCurve, Utility.BasicGuiStyle);
+        GUI.TextArea(new Rect(20, 170, 100, 20), "Brakes: " + _brakesControl, Utility.BasicGuiStyle);
 
 	}
 

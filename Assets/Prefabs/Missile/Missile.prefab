@@ -288,6 +288,7 @@ MonoBehaviour:
   ScanDelay: .300000012
   TurnSpeed: 45
   MaxDetectionAngle: 45
+  Target: {fileID: 0}
 --- !u!114 &11400004
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -301,8 +302,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   DirectDamage: 50
   ExplosionPrefab: {fileID: 100006, guid: e4c8967fa024a574fb768483889f674b, type: 2}
-  ExplosionRadius: 5
-  ExplosionDamage: 50
+  ExplosionRadius: 20
+  ExplosionDamage: 30
   EnginePower: 2000
   Originator: {fileID: 0}
 --- !u!114 &11400006

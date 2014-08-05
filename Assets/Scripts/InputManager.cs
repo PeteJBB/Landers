@@ -180,7 +180,7 @@ public class InputMapping
 
     public static InputMapping FireSecondary = new InputMapping()
     {
-        JoystickAxis = XboxAxis.Triggers,
+        JoystickButton = XboxButtons.X,
         InvertJoystick = false,
         PositiveKey = KeyCode.E
     };

@@ -8,6 +8,7 @@ public class ResupplyArea : MonoBehaviour
     private float _lastResupplyTime;
 
     private const float _mgResupplyRate = 15;
+    private const float _missileResupplyRate = 1;
     private const float _healthResupplyRate = 5;
 
     public readonly List<GameObject> CurrentlyResupplying = new List<GameObject>();
@@ -28,6 +29,11 @@ public class ResupplyArea : MonoBehaviour
                     var mg = g.GetComponent<MachineGun>();
                     if (mg.Ammo < mg.MaxAmmo)
                         mg.Ammo = (int) Mathf.Min(mg.MaxAmmo, mg.Ammo + _mgResupplyRate);
+
+                    var msl = g.GetComponent<MissileLauncher>();
+                    if (msl.Ammo < msl.MaxAmmo)
+                        msl.Ammo = (int)Mathf.Min(msl.MaxAmmo, msl.Ammo + _missileResupplyRate);
+
 
                     var dam = g.GetComponent<Damageable>();
                     dam.Health = (int) Mathf.Min(dam.MaxHealth, dam.Health + _healthResupplyRate);
