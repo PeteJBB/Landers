@@ -146,20 +146,20 @@ public class PlayerFlightControls : MonoBehaviour
 	
 	void OnGUI()
 	{
-		GUI.TextArea(new Rect(20, 20, 100, 20), "Alt: " + transform.position.y, Utility.BasicGuiStyle );
-		GUI.TextArea(new Rect(20, 50, 100, 20), "Throttle: " + Mathf.Round(_throttle * 100) + "%", Utility.BasicGuiStyle);
-        GUI.TextArea(new Rect(20, 80, 100, 20), "Airspeed: " + Mathf.Round(rigidbody.velocity.magnitude), Utility.BasicGuiStyle);
+        GUI.TextArea(new Rect(20, 20, 100, 20), "Alt: " + transform.position.y, GuiStyles.BasicGuiStyle);
+		GUI.TextArea(new Rect(20, 50, 100, 20), "Throttle: " + Mathf.Round(_throttle * 100) + "%", GuiStyles.BasicGuiStyle);
+        GUI.TextArea(new Rect(20, 80, 100, 20), "Airspeed: " + Mathf.Round(rigidbody.velocity.magnitude), GuiStyles.BasicGuiStyle);
         
 	    var mode = _isJetMode ? "On" : "Off";
-        GUI.TextArea(new Rect(20, 110, 100, 20), "Jets: " + mode, Utility.BasicGuiStyle);
+        GUI.TextArea(new Rect(20, 110, 100, 20), "Jets: " + mode, GuiStyles.BasicGuiStyle);
 
 	    var damage = GetComponent<Damageable>();
 	    var health = damage.Health / damage.MaxHealth * 100;
-        GUI.TextArea(new Rect(120, 50, 100, 20), "Health: " + health.ToString("0"), Utility.BasicGuiStyle);
-        GUI.TextArea(new Rect(120, 80, 100, 20), "Ammo: " + GetComponent<MachineGun>().Ammo, Utility.BasicGuiStyle);
+        GUI.TextArea(new Rect(120, 50, 100, 20), "Health: " + health.ToString("0"), GuiStyles.BasicGuiStyle);
+        GUI.TextArea(new Rect(120, 80, 100, 20), "Ammo: " + GetComponent<MachineGun>().Ammo, GuiStyles.BasicGuiStyle);
 
 
-        GUI.TextArea(new Rect(120, 110, 100, 20), "Roll Axis: " + InputMapping.Roll.AxisValue, Utility.BasicGuiStyle);
+        GUI.TextArea(new Rect(120, 110, 100, 20), "Roll Axis: " + InputMapping.Roll.AxisValue, GuiStyles.BasicGuiStyle);
 
         // gunsight
 	    if (GameBrain.CurrentView == GameView.Internal)
@@ -171,9 +171,8 @@ public class PlayerFlightControls : MonoBehaviour
 	    if (GetComponent<Damageable>().Health <= 0)
 	    {
 	        // you're dead messsage
-	        
 	        var rext = Utility.GetCenteredRectangle(new Vector2(Screen.width / 2f, Screen.height / 2f), 320, 64);
-            GUI.TextArea(rext, "YOU'RE DEAD, DUDE", Utility.BigMessageGuiStyle);
+            GUI.TextArea(rext, "YOU'RE DEAD, DUDE", GuiStyles.BigMessageGuiStyle);
 	    }
 
         // flight path indicator

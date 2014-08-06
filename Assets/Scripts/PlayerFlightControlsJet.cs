@@ -18,7 +18,7 @@ public class PlayerFlightControlsJet : MonoBehaviour
     private const float _surfaceControlTopSpeed = 100f;
 
     public AnimationCurve LiftBySpeed;
-    private const float _liftTopSpeed = 70f;
+    private const float _liftTopSpeed = 90f;
 
     private const float _pitchStrength = 40;//24;
     private const float _yawStrength = 17;//30;
@@ -27,7 +27,7 @@ public class PlayerFlightControlsJet : MonoBehaviour
     private const float _wheelBrakesMultiplier = 40f;
 
     const float _enginePower = 400;
-    const float _jetPower = 500;
+    const float _jetPower = 550;
 
     private float _pitchControl = 0;
     private float _yawControl = 0;
@@ -40,8 +40,14 @@ public class PlayerFlightControlsJet : MonoBehaviour
     private float controlCurve;
 
     private WheelCollider[] _wheels;
+
+    public float PitchControl { get { return _pitchControl; } }
+    public float YawControl { get { return _yawControl; } }
+    public float RollControl { get { return _rollControl; } }
+    public float ThrottleControl { get { return _throttle; } }
 	
-	// Use this for initialization
+
+    // Use this for initialization
 	void Start()
 	{
 	    rigidbody.centerOfMass = new Vector3(0, -0.25f, 0f);
@@ -175,11 +181,11 @@ public class PlayerFlightControlsJet : MonoBehaviour
 	void OnGUI()
 	{
 
-        GUI.TextArea(new Rect(20, 50, 100, 20), "Throttle: " + Mathf.Round(_throttle * 100) + "%", Utility.BasicGuiStyle);
+        //GUI.TextArea(new Rect(20, 50, 100, 20), "Throttle: " + Mathf.Round(_throttle * 100) + "%", GuiStyles.BasicGuiStyle);
 
-        // control curve
-        GUI.TextArea(new Rect(20, 140, 100, 20), "Control Curve: " + controlCurve, Utility.BasicGuiStyle);
-        GUI.TextArea(new Rect(20, 170, 100, 20), "Brakes: " + _brakesControl, Utility.BasicGuiStyle);
+        //// control curve
+        //GUI.TextArea(new Rect(20, 140, 100, 20), "Control Curve: " + controlCurve, GuiStyles.BasicGuiStyle);
+        //GUI.TextArea(new Rect(20, 170, 100, 20), "Brakes: " + _brakesControl, GuiStyles.BasicGuiStyle);
 
 	}
 

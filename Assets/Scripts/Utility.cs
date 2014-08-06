@@ -14,29 +14,6 @@ public class Utility
 		return pos;
 	}
 
-	public static GUIStyle BasicGuiStyle = new GUIStyle()
-    {
-        clipping = TextClipping.Overflow,
-        wordWrap = false,
-        normal = new GUIStyleState()
-        {
-            textColor = Color.white
-        }
-    };
-
-    public static GUIStyle BigMessageGuiStyle = new GUIStyle()
-    {
-        clipping = TextClipping.Overflow,
-        wordWrap = false,
-        normal = new GUIStyleState()
-        {
-            textColor = Color.white,
-            //background = Utility.CreatePlainColorTexture(Color.black)
-        },
-        alignment = TextAnchor.MiddleCenter,
-        fontSize = 30
-    };
-
 	public static Vector2 ScreenCenter()
 	{
 		return new Vector2(Screen.width / 2f, Screen.height / 2f);
@@ -50,6 +27,14 @@ public class Utility
 		GUI.matrix = matrixBackup;
 	}
 
+    public static void DrawRotatedTextField(Rect rect, string text, float angle, GUIStyle style)
+	{
+		Matrix4x4 matrixBackup = GUI.matrix;
+		GUIUtility.RotateAroundPivot(angle, rect.center);
+        GUI.TextField(rect, text, style);
+		GUI.matrix = matrixBackup;
+	}
+
 	public static void DrawRotatedGuiTexture(Rect screenRect, float angle, Texture texture, Rect srcRect, Material mat)
 	{
 		if (Event.current.type == EventType.Repaint)
@@ -60,6 +45,22 @@ public class Utility
 			GUI.matrix = matrixBackup;
 		}
 	}
+
+    public static void DrawRectOutline(Rect rect, Color c, int lineWidth)
+    {
+        var rLeft = new Rect(rect.xMin, rect.yMin, lineWidth, rect.height);
+        GUI.DrawTexture(rLeft, CreatePlainColorTexture(Color.white));
+
+        var rRight = new Rect(rect.xMax - lineWidth, rect.yMin, lineWidth, rect.height);
+        GUI.DrawTexture(rRight, CreatePlainColorTexture(Color.white));
+
+        var rTop = new Rect(rect.xMin, rect.yMin, rect.width, lineWidth);
+        GUI.DrawTexture(rTop, CreatePlainColorTexture(Color.white));
+
+        var rBottom = new Rect(rect.xMin, rect.yMax - lineWidth, rect.width, lineWidth);
+        GUI.DrawTexture(rBottom, CreatePlainColorTexture(Color.white));
+
+    }
 
 	public static bool CanSeePoint(Vector3 from, Vector3 to, GameObject target)
 	{

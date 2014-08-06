@@ -34,7 +34,7 @@ public class MachineGun : MonoBehaviour
                 var b = (GameObject)Instantiate(BulletPrefab, pos, rotation);
                 b.rigidbody.velocity = rigidbody != null ? rigidbody.velocity : Vector3.zero;
                 b.rigidbody.AddForce(b.transform.forward * 400);
-
+                b.GetComponent<Projectile>().Originator = gameObject.transform.root.gameObject;
                 b.SetTeam(gameObject.GetTeam());
 
                 if (Ammo != -1)

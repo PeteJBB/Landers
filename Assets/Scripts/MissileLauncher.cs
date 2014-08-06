@@ -7,7 +7,8 @@ public class MissileLauncher : MonoBehaviour
 {
     public bool IsGuiActive;
     public Texture LockTexture;
-    
+    public Texture CircleTexture;
+
     public GameObject MissilePrefab;
     public int Ammo = 200;
     public int MaxAmmo = 200;
@@ -75,15 +76,19 @@ public class MissileLauncher : MonoBehaviour
 
     void OnGUI()
     {
-        if (IsGuiActive && LockTarget != null)
+        if (IsGuiActive)
         {
-            var point = Camera.main.WorldToScreenPoint(LockTarget.transform.position);
-            if (point.z > 0)
+            GUI.DrawTexture(Utility.GetCenteredRectangle(new Vector2(Screen.width / 2, Screen.height / 2), 350, 350), CircleTexture);
+            if (LockTarget != null)
             {
-                var rect = Utility.GetCenteredRectangle(new Vector2(point.x, Screen.height - point.y), 64, 64);
-                Utility.DrawRotatedGuiTexture(rect, (Time.fixedTime % 3) / 3 * 360, LockTexture);
+                var point = Camera.main.WorldToScreenPoint(LockTarget.transform.position);
+                if (point.z > 0)
+                {
+                    var rect = Utility.GetCenteredRectangle(new Vector2(point.x, Screen.height - point.y), 64, 64);
+                    Utility.DrawRotatedGuiTexture(rect, (Time.fixedTime % 3) / 3 * 360, LockTexture);
+                }
+
             }
-            
         }
     }
 

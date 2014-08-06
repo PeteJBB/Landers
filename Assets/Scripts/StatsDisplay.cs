@@ -27,6 +27,6 @@ public class StatsDisplay : MonoBehaviour
     private void OnGUI()
     {
         // FPS
-        GUI.TextArea(new Rect(120, 20, 100, 20), "FPS: " + _fps.ToString("0"), Utility.BasicGuiStyle);
+        GUI.TextArea(new Rect(20, 20, 0, 0), "FPS: " + _fps.ToString("0"), GuiStyles.BasicGuiStyle);
     }
 }

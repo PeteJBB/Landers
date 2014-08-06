@@ -8,7 +8,8 @@ public class GameBrain : MonoBehaviour
     public GameObject ScoutPrefab;
     public GameObject AttackPlanePrefab;
 
-    private int _currentWave = 0;
+    public int CurrentWave = 0;
+
     private float _waveCompleteTime;
     private bool _isWaveComplete = true;
 
@@ -39,7 +40,7 @@ public class GameBrain : MonoBehaviour
             if (Time.fixedTime - _waveCompleteTime > _timeBetweenWaves)
             {
                 // next wave
-                _currentWave++;
+                CurrentWave++;
                 _isWaveComplete = false;
 
                 // spawn ships
@@ -60,12 +61,12 @@ public class GameBrain : MonoBehaviour
     {
         if (_isWaveComplete)
         {
-            var message = _currentWave == 0
+            var message = CurrentWave == 0
                 ? "Get ready for first wave"
-                : "You got 'em! Prepare for Wave " + (_currentWave + 1) + "!";
+                : "You got 'em! Prepare for Wave " + (CurrentWave + 1) + "!";
 
-            var rext = Utility.GetCenteredRectangle(new Vector2(Screen.width / 2f, Screen.height / 4f), 320, 64);
-            GUI.TextArea(rext, message, Utility.BigMessageGuiStyle);
+            var rext = Utility.GetCenteredRectangle(new Vector2(Screen.width / 2f, Screen.height / 3f), 320, 64);
+            GUI.TextArea(rext, message, GuiStyles.BigMessageGuiStyle);
         }
     }
 

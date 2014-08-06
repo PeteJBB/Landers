@@ -205,12 +205,12 @@ public class PlayerFlightControlsAlt : MonoBehaviour
 
     void OnGUI()
     {
-        GUI.TextArea(new Rect(20, 20, 100, 20), "Alt: " + transform.position.y, Utility.BasicGuiStyle);
-        GUI.TextArea(new Rect(20, 50, 100, 20), "Throttle: " + Mathf.Round(_throttle * 100) + "%", Utility.BasicGuiStyle);
-        GUI.TextArea(new Rect(20, 80, 100, 20), "Airspeed: " + Mathf.Round(rigidbody.velocity.magnitude), Utility.BasicGuiStyle);
+        GUI.TextArea(new Rect(20, 20, 100, 20), "Alt: " + transform.position.y, GuiStyles.BasicGuiStyle);
+        GUI.TextArea(new Rect(20, 50, 100, 20), "Throttle: " + Mathf.Round(_throttle * 100) + "%", GuiStyles.BasicGuiStyle);
+        GUI.TextArea(new Rect(20, 80, 100, 20), "Airspeed: " + Mathf.Round(rigidbody.velocity.magnitude), GuiStyles.BasicGuiStyle);
        
         var mode = _isJetMode ? "On" : "Off";
-        GUI.TextArea(new Rect(20, 110, 100, 20), "Jets: " + mode, Utility.BasicGuiStyle);
+        GUI.TextArea(new Rect(20, 110, 100, 20), "Jets: " + mode, GuiStyles.BasicGuiStyle);
 
         // gunsight
         var center = new Vector2(Screen.width / 2f, Screen.height / 2f);

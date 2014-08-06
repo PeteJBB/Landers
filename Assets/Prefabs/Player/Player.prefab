@@ -313,8 +313,8 @@ MonoBehaviour:
   Innaccuracy: .5
   FireDelay: .0599999987
   Offsets:
-  - {x: .75, y: .439999998, z: .5}
-  - {x: -.75, y: .439999998, z: .5}
+  - {x: .600000024, y: .439999998, z: 1.39999998}
+  - {x: -.600000024, y: .439999998, z: 1.39999998}
 --- !u!114 &11400006
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -443,8 +443,8 @@ MonoBehaviour:
   LockTarget: {fileID: 0}
   FireDelay: .100000001
   Offsets:
-  - {x: 1.13, y: -1, z: .150000006}
-  - {x: -1.13, y: -1, z: .150000006}
+  - {x: 1.20000005, y: .300000012, z: .150000006}
+  - {x: -1.20000005, y: .300000012, z: .150000006}
 --- !u!124 &12400000
 Behaviour:
   m_ObjectHideFlags: 1
@@ -474,9 +474,9 @@ WheelCollider:
     stiffnessFactor: 1
   m_SidewaysFriction:
     extremumSlip: 1
-    extremumValue: 20
+    extremumValue: 100
     asymptoteSlip: 2
-    asymptoteValue: 10
+    asymptoteValue: 50
     stiffnessFactor: 1
   m_Enabled: 1
 --- !u!146 &14600002
@@ -501,9 +501,9 @@ WheelCollider:
     stiffnessFactor: 1
   m_SidewaysFriction:
     extremumSlip: 1
-    extremumValue: 20
+    extremumValue: 100
     asymptoteSlip: 2
-    asymptoteValue: 10
+    asymptoteValue: 50
     stiffnessFactor: 1
   m_Enabled: 1
 --- !u!146 &14600004
@@ -528,9 +528,9 @@ WheelCollider:
     stiffnessFactor: 1
   m_SidewaysFriction:
     extremumSlip: 1
-    extremumValue: 20
+    extremumValue: 100
     asymptoteSlip: 2
-    asymptoteValue: 10
+    asymptoteValue: 50
     stiffnessFactor: 1
   m_Enabled: 1
 --- !u!146 &14600006
@@ -555,9 +555,9 @@ WheelCollider:
     stiffnessFactor: 1
   m_SidewaysFriction:
     extremumSlip: 1
-    extremumValue: 20
+    extremumValue: 100
     asymptoteSlip: 2
-    asymptoteValue: 10
+    asymptoteValue: 50
     stiffnessFactor: 1
   m_Enabled: 1
 --- !u!1001 &100100000
