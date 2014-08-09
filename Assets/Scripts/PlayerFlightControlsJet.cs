@@ -20,9 +20,9 @@ public class PlayerFlightControlsJet : MonoBehaviour
     public AnimationCurve LiftBySpeed;
     private const float _liftTopSpeed = 90f;
 
-    private const float _pitchStrength = 40;//24;
-    private const float _yawStrength = 17;//30;
-    private const float _rollStrength = 12;//12;
+    private const float _pitchStrength = 48;//24;
+    private const float _yawStrength = 21;//30;
+    private const float _rollStrength = 15;//12;
     private const float _brakeStrength = 0.25f;
     private const float _wheelBrakesMultiplier = 40f;
 
@@ -90,11 +90,6 @@ public class PlayerFlightControlsJet : MonoBehaviour
         {
             var mg = GetComponent<MachineGun>();
             mg.Fire();
-        }
-        if (InputManager.GetButtonDown(InputMapping.FireSecondary))
-        {
-            var ml = GetComponent<MissileLauncher>();
-            ml.Fire();
         }
 	}
 

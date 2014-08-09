@@ -66,14 +66,9 @@ public class HeatSeeker : MonoBehaviour
         var leadPoint = Target.transform.position;
         if (Target.rigidbody != null)
         {
-            //var dist = Vector3.Distance(transform.position, _target.transform.position);
-            //var relativeVel = transform.worldToLocalMatrix * (rigidbody.velocity - _target.rigidbody.velocity);
-            //var bulletTimeToTarget = relativeVel.z / dist * Time.fixedDeltaTime;
-            //leadPoint += _target.rigidbody.velocity * bulletTimeToTarget;
-
             var dist = Vector3.Distance(transform.position, Target.transform.position);
             var velocity = rigidbody.velocity.magnitude;
-            var bulletTimeToTarget = dist / velocity; // *Time.fixedDeltaTime;
+            var bulletTimeToTarget = dist / velocity;
             leadPoint = Target.transform.position + (Target.rigidbody.velocity * bulletTimeToTarget);
         }
         return leadPoint;
@@ -85,13 +80,24 @@ public class HeatSeeker : MonoBehaviour
         var detections = new List<Detection>();
         foreach (var obj in GameObject.FindGameObjectsWithTag("EnemyPlane"))
         {
-            var angle = Vector3.Angle(transform.forward, obj.transform.position - transform.position);
-            if (angle < MaxDetectionAngle)
+            var dist = Vector3.Distance(transform.position, obj.transform.position);
+            if (dist < 500)
             {
-                detections.Add(new Detection() { angle = angle, gameObject = obj });
+                // check if obj is in front of me
+                var angle = Vector3.Angle(transform.forward, obj.transform.position - transform.position);
+                if (angle < MaxDetectionAngle)
+                {
+                    // check if i am behind obj
+                    var orientation = Vector3.Angle(transform.forward, obj.transform.forward);
+                    if (orientation < 45)
+                    {
+                        var strength = angle * orientation * dist;
+                        detections.Add(new Detection() { strength = strength, gameObject = obj });
+                    }
+                }
             }
         }
-        detections = detections.OrderBy(x => x.angle).ToList();
+        detections = detections.OrderBy(x => x.strength).ToList();
 
         foreach (var d in detections)
         {
@@ -106,7 +112,7 @@ public class HeatSeeker : MonoBehaviour
 
     private class Detection
     {
-        public float angle;
+        public float strength;
         public GameObject gameObject;
     }
 }

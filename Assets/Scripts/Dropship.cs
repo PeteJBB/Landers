@@ -1,5 +1,4 @@
-﻿using System;
-using System.Runtime.InteropServices;
+﻿using System.Runtime.InteropServices;
 using UnityEngine;
 using System.Collections;
 
@@ -31,8 +30,10 @@ public class Dropship : MonoBehaviour
     void Start()
     {
         _state = DropShipState.Cruising;
-        
-        //_landingSite = new Vector3(-1608.959f, 0, -57.52983f);
+        var sites = FindObjectsOfType<LandingSite>();
+        LandingSite = sites[Random.Range(0, sites.Length)];
+
+        //_landingSite = new Vectr3(-1608.959f, 0, -57.52983f);
         //_landingSite.y = Utility.GetTerrainHeight(_landingSite);
     }
 

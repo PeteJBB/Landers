@@ -178,6 +178,12 @@ public class InputMapping
         PositiveKey = KeyCode.Space
     };
 
+    public static InputMapping ChangeWeapon = new InputMapping()
+    {
+        JoystickButton = XboxButtons.Y,
+        PositiveKey = KeyCode.F
+    };
+
     public static InputMapping FireSecondary = new InputMapping()
     {
         JoystickButton = XboxButtons.X,
@@ -196,6 +202,30 @@ public class InputMapping
         JoystickButton = XboxButtons.Back,
         PositiveKey = KeyCode.M
     };
+
+    public static InputMapping LookForward = new InputMapping()
+    {
+        JoystickAxis = XboxAxis.DPadY,
+        PositiveKey = KeyCode.Keypad2
+    };
+    public static InputMapping LookBehind = new InputMapping()
+    {
+        JoystickAxis = XboxAxis.DPadY,
+        PositiveKey = KeyCode.Keypad2,
+        InvertJoystick = true
+    };
+    public static InputMapping LookLeft = new InputMapping()
+    {
+        JoystickAxis = XboxAxis.DPadX,
+        PositiveKey = KeyCode.Keypad2,
+        InvertJoystick = true
+    };
+    public static InputMapping LookRight = new InputMapping()
+    {
+        JoystickAxis = XboxAxis.DPadX,
+        PositiveKey = KeyCode.Keypad2
+    };
+    
 }
 
 public class XboxButtons

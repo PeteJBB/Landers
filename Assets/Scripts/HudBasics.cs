@@ -11,6 +11,8 @@ public class HudBasics : MonoBehaviour
     Vector2 _horizonSize = new Vector2(400, 256);
     Rect _hudBoundary;
 
+    public Vector3 FlightPathIndicatorPoint;
+
     void Start()
     {
         
@@ -20,7 +22,7 @@ public class HudBasics : MonoBehaviour
     {
         _hudBoundary = new Rect(Screen.width / 5, (Screen.height / 5), (Screen.width / 5) * 3, (Screen.height / 5) * 3);
 
-        if (GameBrain.CurrentView == GameView.Internal)
+        if (GameBrain.CurrentView == GameView.Internal && !GameBrain.HideHud)
         {
             // center point
             GUI.DrawTexture(Utility.GetCenteredRectangle(Utility.ScreenCenter(), GunSightTexture.width, GunSightTexture.height), GunSightTexture);
@@ -102,7 +104,7 @@ public class HudBasics : MonoBehaviour
         var waveRect = new Rect(_hudBoundary.xMin, _hudBoundary.yMin, 0, 0);
         GUI.TextField(waveRect, "WAVE " + wave, GuiStyles.Hud_Label);
 
-        var enemies = GameObject.FindGameObjectsWithTag("EnemyPlane").Length;
+        var enemies = FindObjectOfType<GameBrain>().CurrentEnemies;
         var enyRect = new Rect(_hudBoundary.xMin, _hudBoundary.yMin + 20, 0, 0);
         GUI.TextField(enyRect, "ENEMY " + enemies, GuiStyles.Hud_Label);
     }
@@ -118,8 +120,8 @@ public class HudBasics : MonoBehaviour
         GUI.TextField(timeRect, "TIME " + timeFormatted, GuiStyles.Hud_Label_Right);
 
         var buildings = GameObject.FindGameObjectsWithTag("FriendlyStructure").Length;
-        var enyRect = new Rect(_hudBoundary.xMax, _hudBoundary.yMin + 20, 0, 0);
-        GUI.TextField(enyRect, "BUILDINGS " + buildings, GuiStyles.Hud_Label_Right);
+        var buildingsRect = new Rect(_hudBoundary.xMax, _hudBoundary.yMin + 20, 0, 0);
+        GUI.TextField(buildingsRect, "BUILDINGS " + buildings, GuiStyles.Hud_Label_Right);
     }
 
     void DrawAmmo()
@@ -220,5 +222,6 @@ public class HudBasics : MonoBehaviour
             var velRect = Utility.GetCenteredRectangle(velPoint, 32, 32);
             GUI.DrawTexture(velRect, FlightPathTexture);
         }
+        FlightPathIndicatorPoint = velPoint;
     }
 }

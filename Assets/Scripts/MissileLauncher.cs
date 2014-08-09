@@ -3,16 +3,14 @@ using UnityEngine;
 using System.Collections;
 using System.Linq;
 
-public class MissileLauncher : MonoBehaviour
+public class MissileLauncher : MonoBehaviour, IPlayerWeapon
 {
-    public bool IsGuiActive;
-    public Texture LockTexture;
-    public Texture CircleTexture;
-
     public GameObject MissilePrefab;
-    public int Ammo = 200;
-    public int MaxAmmo = 200;
-    public float Innaccuracy = 0;
+    public int Ammo = 6;
+    public int MaxAmmo = 6;
+
+    public Texture LockTexture;
+    public Texture HudTexture;
 
     public float ScanDelay = 0.2f;
     public float MaxDetectionAngle = 45;
@@ -41,21 +39,14 @@ public class MissileLauncher : MonoBehaviour
                 var offset = Offsets[_offsetIndex];
                 var pos = transform.TransformPoint(offset);
 
-                var inaccuracyAdjustment = Quaternion.Euler(
-                    Random.Range(-Innaccuracy, Innaccuracy),
-                    Random.Range(-Innaccuracy, Innaccuracy), 
-                    Random.Range(-Innaccuracy, Innaccuracy));
-                var dir = inaccuracyAdjustment * transform.forward;
-                var rotation = Quaternion.LookRotation(dir);
-
-                var b = (GameObject)Instantiate(MissilePrefab, pos, rotation);
+                var b = (GameObject)Instantiate(MissilePrefab, pos, transform.rotation);
                 b.rigidbody.velocity = rigidbody != null ? rigidbody.velocity : Vector3.zero;
                 b.rigidbody.AddForce(b.transform.forward * 400);
                 b.GetComponent<Projectile>().Originator = gameObject;
 
                 b.SetTeam(gameObject.GetTeam());
 
-                if (Ammo != -1)
+                if (Ammo > 0)
                     Ammo--;
 
                 _offsetIndex = (_offsetIndex + 1) % Offsets.Length;
@@ -74,36 +65,29 @@ public class MissileLauncher : MonoBehaviour
         }
     }
 
-    void OnGUI()
-    {
-        if (IsGuiActive)
-        {
-            GUI.DrawTexture(Utility.GetCenteredRectangle(new Vector2(Screen.width / 2, Screen.height / 2), 350, 350), CircleTexture);
-            if (LockTarget != null)
-            {
-                var point = Camera.main.WorldToScreenPoint(LockTarget.transform.position);
-                if (point.z > 0)
-                {
-                    var rect = Utility.GetCenteredRectangle(new Vector2(point.x, Screen.height - point.y), 64, 64);
-                    Utility.DrawRotatedGuiTexture(rect, (Time.fixedTime % 3) / 3 * 360, LockTexture);
-                }
-
-            }
-        }
-    }
-
     private GameObject DetectTarget()
     {
         var detections = new List<Detection>();
         foreach (var obj in GameObject.FindGameObjectsWithTag("EnemyPlane"))
         {
-            var angle = Vector3.Angle(transform.forward, obj.transform.position - transform.position);
-            if (angle < MaxDetectionAngle)
+            var dist = Vector3.Distance(transform.position, obj.transform.position);
+            if (dist < 500)
             {
-                detections.Add(new Detection() { angle = angle, gameObject = obj });
+                // check if obj is in front of me
+                var angle = Vector3.Angle(transform.forward, obj.transform.position - transform.position);
+                if (angle < MaxDetectionAngle)
+                {
+                    // check if i am behind obj
+                    var orientation = Vector3.Angle(transform.forward, obj.transform.forward);
+                    if (orientation < 45)
+                    {
+                        var strength = angle * orientation * dist;
+                        detections.Add(new Detection() { strength = strength, gameObject = obj });
+                    }
+                }
             }
         }
-        detections = detections.OrderBy(x => x.angle).ToList();
+        detections = detections.OrderBy(x => x.strength).ToList();
 
         foreach (var d in detections)
         {
@@ -118,7 +102,7 @@ public class MissileLauncher : MonoBehaviour
 
     private class Detection
     {
-        public float angle;
+        public float strength;
         public GameObject gameObject;
     }
 
@@ -130,6 +114,21 @@ public class MissileLauncher : MonoBehaviour
         {
             Gizmos.matrix = transform.localToWorldMatrix;
             Gizmos.DrawWireCube(o, new Vector3(0.1f, 0.1f, 0.5f));
+        }
+    }
+
+    public void DrawHud()
+    {
+        GUI.DrawTexture(Utility.GetCenteredRectangle(new Vector2(Screen.width / 2, Screen.height / 2), 350, 350), HudTexture);
+        if (LockTarget != null)
+        {
+            var point = Camera.main.WorldToScreenPoint(LockTarget.transform.position);
+            if (point.z > 0)
+            {
+                var rect = Utility.GetCenteredRectangle(new Vector2(point.x, Screen.height - point.y), 64, 64);
+                Utility.DrawRotatedGuiTexture(rect, (Time.fixedTime % 3) / 3 * 360, LockTexture);
+            }
+
         }
     }
 }

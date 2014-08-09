@@ -18,7 +18,9 @@ GameObject:
   - 114: {fileID: 11400006}
   - 114: {fileID: 11400010}
   - 114: {fileID: 11400012}
+  - 114: {fileID: 11400018}
   - 114: {fileID: 11400014}
+  - 114: {fileID: 11400020}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -38,6 +40,7 @@ GameObject:
   - 92: {fileID: 9200000}
   - 124: {fileID: 12400000}
   - 81: {fileID: 8100000}
+  - 114: {fileID: 11400016}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -432,19 +435,58 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c5a18f10700038949b279f8fdcff95e4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  IsGuiActive: 1
-  LockTexture: {fileID: 2800000, guid: 4eef9e2660035b1438119b78fc418b46, type: 3}
   MissilePrefab: {fileID: 100002, guid: 41047ca6ee7f64d478bab9b6d3d651d5, type: 2}
   Ammo: 6
   MaxAmmo: 6
-  Innaccuracy: 1
+  LockTexture: {fileID: 2800000, guid: 4eef9e2660035b1438119b78fc418b46, type: 3}
+  HudTexture: {fileID: 2800000, guid: 3b624fbeb0c235d4394df37d37fbedc4, type: 3}
   ScanDelay: .200000003
   MaxDetectionAngle: 45
   LockTarget: {fileID: 0}
   FireDelay: .100000001
   Offsets:
-  - {x: 1.20000005, y: .300000012, z: .150000006}
-  - {x: -1.20000005, y: .300000012, z: .150000006}
+  - {x: 1.20000005, y: .300000012, z: -.270000011}
+  - {x: -1.20000005, y: .300000012, z: -.270000011}
+--- !u!114 &11400016
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100002}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 42b463711bd7a4e4d96194ea94caca92, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &11400018
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100000}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 425bab8b004f9d843b8711407ba155bf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &11400020
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100000}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2a6ae84b40e52c648aeab26db6760b2c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  BombPrefab: {fileID: 100000, guid: a85c8dd205d1be2428482e3cd6589ffc, type: 2}
+  Ammo: -1
+  MaxAmmo: -1
+  Offsets:
+  - {x: .600000024, y: 0, z: 0}
+  - {x: -.600000024, y: 0, z: 0}
+  FireDelay: .0599999987
 --- !u!124 &12400000
 Behaviour:
   m_ObjectHideFlags: 1

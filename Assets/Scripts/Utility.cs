@@ -62,6 +62,20 @@ public class Utility
 
     }
 
+    public static void DrawLine(Vector2 start, Vector2 end, int width, Color color)
+    {
+        Vector2 d = end - start;
+        float a = Mathf.Rad2Deg * Mathf.Atan(d.y / d.x);
+        if (d.x < 0)
+            a += 180;
+
+        int width2 = (int)Mathf.Ceil(width / 2);
+
+        GUIUtility.RotateAroundPivot(a, start);
+        GUI.DrawTexture(new Rect(start.x, start.y - width2, d.magnitude, width), CreatePlainColorTexture(color));
+        GUIUtility.RotateAroundPivot(-a, start);
+    }
+
 	public static bool CanSeePoint(Vector3 from, Vector3 to, GameObject target)
 	{
 		RaycastHit hitInfo;
