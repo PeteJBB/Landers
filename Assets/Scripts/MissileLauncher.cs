@@ -13,7 +13,7 @@ public class MissileLauncher : MonoBehaviour, IPlayerWeapon
     public Texture HudTexture;
 
     public float ScanDelay = 0.2f;
-    public float MaxDetectionAngle = 45;
+    public float MaxDetectionAngle = 60;
     public GameObject LockTarget;
 
     public float FireDelay = 0.06f;
@@ -27,7 +27,7 @@ public class MissileLauncher : MonoBehaviour, IPlayerWeapon
 
     void Start()
     {
-        _visibilityTestLayerMask = LayerMask.GetMask(new[] { "Terrain", "Buildings" });
+        _visibilityTestLayerMask = LayerMask.GetMask(new[] { "Default", "Terrain", "Buildings" });
     }
 
     public void Fire()
@@ -40,10 +40,11 @@ public class MissileLauncher : MonoBehaviour, IPlayerWeapon
                 var pos = transform.TransformPoint(offset);
 
                 var b = (GameObject)Instantiate(MissilePrefab, pos, transform.rotation);
+                b.GetComponent<Projectile>().Originator = gameObject;
+                b.GetComponent<HeatSeeker>().Target = LockTarget;
                 b.rigidbody.velocity = rigidbody != null ? rigidbody.velocity : Vector3.zero;
                 b.rigidbody.AddForce(b.transform.forward * 400);
-                b.GetComponent<Projectile>().Originator = gameObject;
-
+                
                 b.SetTeam(gameObject.GetTeam());
 
                 if (Ammo > 0)
@@ -68,21 +69,21 @@ public class MissileLauncher : MonoBehaviour, IPlayerWeapon
     private GameObject DetectTarget()
     {
         var detections = new List<Detection>();
-        foreach (var obj in GameObject.FindGameObjectsWithTag("EnemyPlane"))
+        foreach (var heatSource in FindObjectsOfType<HeatSeekerTarget>())
         {
-            var dist = Vector3.Distance(transform.position, obj.transform.position);
-            if (dist < 500)
+            var dist = Vector3.Distance(transform.position, heatSource.transform.position);
+            if (dist < 500 * heatSource.Intensity)
             {
                 // check if obj is in front of me
-                var angle = Vector3.Angle(transform.forward, obj.transform.position - transform.position);
+                var angle = Vector3.Angle(transform.forward, heatSource.transform.position - transform.position);
                 if (angle < MaxDetectionAngle)
                 {
-                    // check if i am behind obj
-                    var orientation = Vector3.Angle(transform.forward, obj.transform.forward);
-                    if (orientation < 45)
+                    // check if i a within heat source's visible cone
+                    var orientation = Vector3.Angle(heatSource.transform.forward, transform.position - heatSource.transform.position);
+                    if (orientation < heatSource.Angle)
                     {
-                        var strength = angle * orientation * dist;
-                        detections.Add(new Detection() { strength = strength, gameObject = obj });
+                        var strength = angle * orientation * dist * heatSource.Intensity;
+                        detections.Add(new Detection() { strength = strength, gameObject = heatSource.gameObject });
                     }
                 }
             }
@@ -115,6 +116,7 @@ public class MissileLauncher : MonoBehaviour, IPlayerWeapon
             Gizmos.matrix = transform.localToWorldMatrix;
             Gizmos.DrawWireCube(o, new Vector3(0.1f, 0.1f, 0.5f));
         }
+        Gizmos.matrix = Matrix4x4.identity;
     }
 
     public void DrawHud()

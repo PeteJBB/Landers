@@ -8,6 +8,7 @@ public class Projectile : MonoBehaviour
     public float ExplosionRadius;
     public float ExplosionDamage;
     public float EnginePower;
+    public Vector3 FreefallDrag;
 
     public GameObject Originator;
 
@@ -20,14 +21,23 @@ public class Projectile : MonoBehaviour
 
     void Update()
     {
-        if (EnginePower > 0)
-        {
-            rigidbody.AddRelativeForce(0, 0, EnginePower);
-        }
+        
     }
 
     void FixedUpdate()
     {
+        if (EnginePower > 0)
+        {
+            rigidbody.AddRelativeForce(0, 0, EnginePower);
+        }
+
+        // drag by axis
+        var vel = rigidbody.velocity;
+        vel.x *= 1 - (FreefallDrag.x * Time.fixedDeltaTime);
+        vel.y *= 1 - (FreefallDrag.y * Time.fixedDeltaTime);
+        vel.z *= 1 - (FreefallDrag.z * Time.fixedDeltaTime);
+        rigidbody.velocity = vel;
+
         var ray = new Ray(transform.position - (rigidbody.velocity * Time.fixedDeltaTime), rigidbody.velocity.normalized);
         RaycastHit hitInfo;
         if (Physics.Raycast(ray, out hitInfo, rigidbody.velocity.magnitude * Time.fixedDeltaTime))

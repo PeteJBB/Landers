@@ -424,6 +424,7 @@ MonoBehaviour:
   HorizonTexture: {fileID: 2800000, guid: 9a5f410ccc37a0c479c0a66a3d66d17a, type: 3}
   CompassTexture: {fileID: 2800000, guid: 2cea207755fb79547aabf5de09e4e22f, type: 3}
   FlightPathTexture: {fileID: 2800000, guid: 1630fe98c260b66459d8e33a99e7a500, type: 3}
+  FlightPathIndicatorPoint: {x: 0, y: 0, z: 0}
 --- !u!114 &11400014
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -436,8 +437,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MissilePrefab: {fileID: 100002, guid: 41047ca6ee7f64d478bab9b6d3d651d5, type: 2}
-  Ammo: 6
-  MaxAmmo: 6
+  Ammo: -1
+  MaxAmmo: -1
   LockTexture: {fileID: 2800000, guid: 4eef9e2660035b1438119b78fc418b46, type: 3}
   HudTexture: {fileID: 2800000, guid: 3b624fbeb0c235d4394df37d37fbedc4, type: 3}
   ScanDelay: .200000003
@@ -483,6 +484,7 @@ MonoBehaviour:
   BombPrefab: {fileID: 100000, guid: a85c8dd205d1be2428482e3cd6589ffc, type: 2}
   Ammo: -1
   MaxAmmo: -1
+  ImpactPointTexture: {fileID: 2800000, guid: 8ebc3c771b272cd4a81f5c703a26b691, type: 3}
   Offsets:
   - {x: .600000024, y: 0, z: 0}
   - {x: -.600000024, y: 0, z: 0}

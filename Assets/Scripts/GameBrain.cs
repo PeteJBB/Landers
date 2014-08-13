@@ -56,18 +56,18 @@ public class GameBrain : MonoBehaviour
                 Instantiate(AttackPlanePrefab, new Vector3(1207, 180, -1538), Quaternion.Euler(0, 317, 0));
 
                 // spawn dropship
-                var sites = FindObjectsOfType<LandingSite>().Where(x => !x.IsEngaged).ToArray();
-                if (sites.Length > 0)
-                {
-                    var site = sites[Random.Range(0, sites.Length)];
-                    var pos = site.transform.position + (site.ApproachVector.normalized * 2000);
-                    pos.y = 1000;
+                //var sites = FindObjectsOfType<LandingSite>().Where(x => !x.IsEngaged).ToArray();
+                //if (sites.Length > 0)
+                //{
+                //    var site = sites[Random.Range(0, sites.Length)];
+                //    var pos = site.transform.position + (site.ApproachVector.normalized * 2000);
+                //    pos.y = 1000;
 
-                    var dropship = (GameObject)Instantiate(DropShipPrefab, pos, Quaternion.identity);
-                    dropship.transform.position = pos;
-                    dropship.GetComponent<Dropship>().LandingSite = site;
-                    site.IsEngaged = true;
-                }
+                //    var dropship = (GameObject)Instantiate(DropShipPrefab, pos, Quaternion.identity);
+                //    dropship.transform.position = pos;
+                //    dropship.GetComponent<Dropship>().LandingSite = site;
+                //    site.IsEngaged = true;
+                //}
             }
         }
         else if (CurrentEnemies == 0)

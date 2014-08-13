@@ -187,7 +187,7 @@ Rigidbody:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100002}
   serializedVersion: 2
-  m_Mass: .5
+  m_Mass: 2
   m_Drag: 0
   m_AngularDrag: .0500000007
   m_UseGravity: 1
@@ -272,9 +272,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cdebf9eff8e0db4da9823b0050ba20a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ScanDelay: .300000012
-  TurnSpeed: 45
-  MaxDetectionAngle: 45
+  TurnSpeed: 50
+  MaxDetectionAngle: 90
   Target: {fileID: 0}
 --- !u!114 &11400004
 MonoBehaviour:
@@ -291,7 +290,8 @@ MonoBehaviour:
   ExplosionPrefab: {fileID: 100006, guid: e4c8967fa024a574fb768483889f674b, type: 2}
   ExplosionRadius: 20
   ExplosionDamage: 30
-  EnginePower: 2000
+  EnginePower: 1000
+  FreefallDrag: {x: 0, y: 0, z: 0}
   Originator: {fileID: 0}
 --- !u!114 &11400006
 MonoBehaviour:
@@ -339,7 +339,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ab3f47c150918f54a96721fb7135823f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  LifeTime: 10
+  LifeTime: 20
 --- !u!123 &12300000
 LensFlare:
   m_ObjectHideFlags: 1

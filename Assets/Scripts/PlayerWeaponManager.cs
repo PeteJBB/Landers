@@ -7,7 +7,7 @@ public class PlayerWeaponManager : MonoBehaviour
     private MissileLauncher _missileLauncher;
     private BombLauncher _bombLauncher;
 
-    List<IPlayerWeapon> _weapons;
+    List<IPlayerWeapon> _weapons = new List<IPlayerWeapon>();
     int _selectedWeaponIndex;
 
     // Use this for initialization
@@ -16,11 +16,8 @@ public class PlayerWeaponManager : MonoBehaviour
         _missileLauncher = GetComponent<MissileLauncher>();
         _bombLauncher = GetComponent<BombLauncher>();
 
-        _weapons = new List<IPlayerWeapon>()
-        {
-            _missileLauncher,
-            _bombLauncher
-        };
+        _weapons.Add(_missileLauncher);
+        _weapons.Add(_bombLauncher);
     }
 
     // Update is called once per frame

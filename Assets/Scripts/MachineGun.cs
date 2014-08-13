@@ -56,5 +56,6 @@ public class MachineGun : MonoBehaviour
             Gizmos.matrix = transform.localToWorldMatrix;
             Gizmos.DrawWireCube(o, new Vector3(0.1f, 0.1f, 0.5f));
         }
+        Gizmos.matrix = Matrix4x4.identity;
     }
 }

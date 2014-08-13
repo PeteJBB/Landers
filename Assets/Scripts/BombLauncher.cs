@@ -59,15 +59,25 @@ public class BombLauncher : MonoBehaviour, IPlayerWeapon
             var impactPoint = transform.position;
             var vel = rigidbody.velocity;
             float t = 0;
-            for (var i = 0; i < 1000; i++)
+            var drag = BombPrefab.rigidbody.drag;
+            var proj = BombPrefab.GetComponent<Projectile>();
+            var step = Time.fixedDeltaTime * 10;
+            for (var i = 0; i < 100; i++)
             {
-                vel *= 1 - (0.2f * Time.fixedDeltaTime);
-                vel += Physics.gravity * Time.fixedDeltaTime;
-                impactPoint += vel * Time.fixedDeltaTime;
+                vel += Physics.gravity * step;
+                vel *= 1 - (drag * Time.fixedDeltaTime);
+                vel.x *= 1 - (proj.FreefallDrag.x * step);
+                vel.y *= 1 - (proj.FreefallDrag.y * step);
+                vel.z *= 1 - (proj.FreefallDrag.z * step);
+
+                impactPoint += vel * step;
 
                 t = Utility.GetTerrainHeight(impactPoint);
                 if (impactPoint.y < t)
+                {
+                    print(i);
                     break;
+                }
             }
             impactPoint.y = t;
 

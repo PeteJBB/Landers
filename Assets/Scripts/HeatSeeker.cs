@@ -5,51 +5,42 @@ using System.Linq;
 
 public class HeatSeeker : MonoBehaviour 
 {
-    public float ScanDelay = 0.2f;
-    public float TurnSpeed = 60; // degrees per second
-    public float MaxDetectionAngle = 45;
+    public float TurnSpeed = 50; // degrees per second
+    public float MaxDetectionAngle = 90;
     public GameObject Target;
     
-    private float _lastScan;
-    private int _visibilityTestLayerMask;
     private float _lastDistToTarget;
-
+    private Vector3 _mylastPos;
+    private Vector3 _targetLastPos;
+    
     void Start()
     {
-        //_lastScan = Time.fixedTime;
-        _visibilityTestLayerMask = LayerMask.GetMask(new[] { "Terrain", "Buildings" });
+        
     }
 
 	void Update () 
     {
-        if (Target != null)
+        if (Target != null && CheckTargetLock())
         {
+            // turn towards target
             var leadPoint = ComputLeadPoint();
-            var lookRot = Quaternion.LookRotation(Target.transform.position - transform.position);
+            var lookRot = Quaternion.LookRotation(leadPoint - transform.position);
             transform.rotation = Quaternion.RotateTowards(transform.rotation, lookRot, TurnSpeed * Time.deltaTime);
 
             // proximity fuse - detonate just when near-miss occurs
             var dist = Vector3.Distance(transform.position, Target.transform.position);
             var angle = Vector3.Angle(transform.forward, Target.transform.position - transform.position);
-            
-            if (dist < 50 && angle > 90)// && _lastDistToTarget < dist)
+            print("dist: " + dist);
+            if (dist < 20 && angle > 90)
             {
                 // detonate
-                print("DETONATE!!!");
-                print("LastDist: " + _lastDistToTarget + ", dist: " + dist + ", angle: " + angle);
                 GetComponent<Projectile>().Explode(transform.position);
                 Destroy(gameObject);
             }
             _lastDistToTarget = dist;
+            _targetLastPos = Target.transform.position;
         }
-
-        // rescan
-        if (Time.fixedTime - _lastScan > ScanDelay)
-        {
-            // look for target
-            Target = FindNewTarget();
-            _lastScan = Time.fixedTime;
-        }
+        _mylastPos = transform.position;
 	}
 
     void OnDrawGizmos()
@@ -63,56 +54,37 @@ public class HeatSeeker : MonoBehaviour
 
     private Vector3 ComputLeadPoint()
     {
-        var leadPoint = Target.transform.position;
-        if (Target.rigidbody != null)
-        {
-            var dist = Vector3.Distance(transform.position, Target.transform.position);
-            var velocity = rigidbody.velocity.magnitude;
-            var bulletTimeToTarget = dist / velocity;
-            leadPoint = Target.transform.position + (Target.rigidbody.velocity * bulletTimeToTarget);
-        }
-        return leadPoint;
+        var myVel = (transform.position - _mylastPos) / Time.deltaTime;
+        var targetVel = (Target.transform.position - _targetLastPos) / Time.deltaTime;
+
+        var relativeVel = rigidbody.velocity - targetVel;
+        var dist = Vector3.Distance(transform.position, Target.transform.position);
+
+        var bulletTimeToTarget = dist / relativeVel.magnitude;
+        var leadPoint = Target.transform.position + (targetVel * bulletTimeToTarget);
+
+        return leadPoint; 
     }
 
-
-    private GameObject FindNewTarget()
+    private bool CheckTargetLock()
     {
-        var detections = new List<Detection>();
-        foreach (var obj in GameObject.FindGameObjectsWithTag("EnemyPlane"))
-        {
-            var dist = Vector3.Distance(transform.position, obj.transform.position);
-            if (dist < 500)
-            {
-                // check if obj is in front of me
-                var angle = Vector3.Angle(transform.forward, obj.transform.position - transform.position);
-                if (angle < MaxDetectionAngle)
-                {
-                    // check if i am behind obj
-                    var orientation = Vector3.Angle(transform.forward, obj.transform.forward);
-                    if (orientation < 45)
-                    {
-                        var strength = angle * orientation * dist;
-                        detections.Add(new Detection() { strength = strength, gameObject = obj });
-                    }
-                }
-            }
-        }
-        detections = detections.OrderBy(x => x.strength).ToList();
+        var dist = Vector3.Distance(transform.position, Target.transform.position);
 
-        foreach (var d in detections)
+        // check if obj is in front of me
+        var angle = Vector3.Angle(transform.forward, Target.transform.position - transform.position);
+        if (angle > MaxDetectionAngle)
         {
-            if (!Physics.Linecast(transform.position, d.gameObject.transform.position, _visibilityTestLayerMask))
-            {
-                return d.gameObject;
-            }
+            return false;
         }
 
-        return null;
-    }
+        // check if i am in targets visible cone
+        //var orientation = Vector3.Angle(Target.transform.forward, transform.position - Target.transform.position);
+        //if (orientation > Target.GetComponent<HeatSeekerTarget>().Angle)
+        //{
+        //    print(Time.fixedTime + ": Lost missile lock!");
+        //    return false;
+        //}
 
-    private class Detection
-    {
-        public float strength;
-        public GameObject gameObject;
+        return true;
     }
 }
